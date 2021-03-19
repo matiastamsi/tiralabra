@@ -1,5 +1,7 @@
 # Tiralabra
 
+The project for the course [Data Structures Lab 2021 p4](https://tiralabra.github.io/2021_p4/en/) at the University of Helsinki.
+
 ## Documentation
 [Design document](https://github.com/matiastamsi/tiralabra/blob/main/documentation/design_document.md)
 
