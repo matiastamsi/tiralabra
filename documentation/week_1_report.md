@@ -5,3 +5,4 @@
 - I did learn about a trie and about it's time complexity. Also, I did memorize about the backtracking and it's time complexity.
 - I'm not sure about the space complexities so I did only reason those. It would be nice to get confirmation about those! Also, I'm not sure that I need to do my own cipher generator? Can I use Java's random methods to at least generate random integers to create random substitution? The goal is to decrypt those not to encrypt. Creating my own random generator is extra work.
 - Next I will do the goals of the second week.
+- I did spend about 8 hours to this.
