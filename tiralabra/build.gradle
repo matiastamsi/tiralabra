@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'application'
-
+apply plugin: 'checkstyle'
 
 mainClassName = 'tiralabra.Main'
 
@@ -13,11 +13,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+jacoco {
+  toolVersion = "0.8.2"
+}
+
 jacocoTestReport {
     reports {
         xml.enabled = true
         html.enabled = true
     }
 }
-
-check.dependsOn jacocoTestReport

@@ -1,12 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tiralabra;
 
+import tiralabra.domain.Trie;
+
 /**
- *
+ * The main class of the application.
+ * 
  * @author tamsi
  */
 public class Main {
@@ -15,7 +14,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Trie trie = new Trie();
+        trie.createTrie("english_words_lowercase.txt");
+        trie.findWord("s");
     }
-    
 }
