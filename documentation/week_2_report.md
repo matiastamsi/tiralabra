@@ -9,4 +9,5 @@
 - I did learn to implement a trie. It was first a bit tricky but I did manage to get it right!
 - I have a clear picture of what I am doing at a time.
 - Next I will implement the backtracking. Frequencies will be added later. So, the idea is to get it work like with bruteforce. When it works, then the frequencies are added to make it more efficient.
+- I spent about 8 hours this week.
 
