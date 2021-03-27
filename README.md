@@ -12,6 +12,6 @@ The project for the course [Data Structures Lab 2021 p4](https://tiralabra.githu
 
 ## Testing
 
-<a href="./tiralabra/blob/main/tiralabra/build/reports/checkstyle/main.html" target="_blank">Checkstyle report</a>
+<a href="/tiralabra/blob/main/tiralabra/build/reports/checkstyle/main.html" target="_blank">Checkstyle report</a>
 
-<a href="./tiralabra/blob/main/tiralabra/build/reports/jacoco/test/html/index.html" target="_blank">JaCoCo report</a>
+<a href="/tiralabra/blob/main/tiralabra/build/reports/jacoco/test/html/index.html" target="_blank">JaCoCo report</a>
