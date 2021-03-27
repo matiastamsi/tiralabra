@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tiralabratest.domain.TrieTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2021-03-27T16:25:38" hostname="lx9-fuxi124" time="0.283">
+  <properties/>
+  <testcase name="findingExistingEnglishWordWorks" classname="tiralabratest.domain.TrieTest" time="0.0"/>
+  <testcase name="creatingTrieFailsIfWrongPath" classname="tiralabratest.domain.TrieTest" time="0.014"/>
+  <testcase name="creatingTrieWithRootsWorks" classname="tiralabratest.domain.TrieTest" time="0.0"/>
+  <testcase name="unrealWordNotFound" classname="tiralabratest.domain.TrieTest" time="0.0"/>
+  <testcase name="creatingTrieBasedOnFileOfWordsWorks" classname="tiralabratest.domain.TrieTest" time="0.063"/>
+  <system-out><![CDATA[Error while reading the file: iBetThereIsNoFileCalledThis.txt
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
