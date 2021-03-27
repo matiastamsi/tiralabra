@@ -10,5 +10,8 @@ The project for the course [Data Structures Lab 2021 p4](https://tiralabra.githu
 
 [Week 2 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_2_report.md)
 
+## Testing
 
+<a href="https://github.com/matiastamsi/tiralabra/blob/main/tiralabra/build/reports/checkstyle/main.html" target="_blank">Checkstyle report</a>
 
+<a href="https://github.com/matiastamsi/tiralabra/blob/main/tiralabra/build/reports/jacoco/test/html/index.html" target="_blank">JaCoCo report</a>
