@@ -16,6 +16,5 @@ public class Main {
     public static void main(String[] args) {
         Trie trie = new Trie();
         trie.createTrie("english_words_lowercase.txt");
-        trie.findWord("s");
     }
 }

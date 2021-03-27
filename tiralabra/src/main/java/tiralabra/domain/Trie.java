@@ -86,7 +86,7 @@ public class Trie {
     public boolean findWord(String word) {
         char f = word.charAt(0);
         if (word.length() == 1) { // There is one-letter words 'a' and 'I'.
-            if (f == 97 || f == 107) {
+            if (f == 97 || f == 105) {
                 return true;
             } else {
                 return false;
@@ -128,6 +128,11 @@ public class Trie {
         return null;
     }
     
+    /**
+     * Getter method to return the array. Mainly for testing purposes.
+     * 
+     * @return the array of roots (first letters)
+     */
     public TrieNode[] getRoots() {
         return this.roots;
     }

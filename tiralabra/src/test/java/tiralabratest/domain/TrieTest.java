@@ -1,4 +1,3 @@
-
 package tiralabratest.domain;
 
 import org.junit.Test;
@@ -6,6 +5,7 @@ import static org.junit.Assert.*;
 import tiralabra.domain.Trie;
 
 /**
+ * The test class that will test the Trie object.
  *
  * @author tamsi
  */
@@ -20,6 +20,13 @@ public class TrieTest {
     @Test
     public void creatingTrieWithRootsWorks() {
         assertEquals(26, trie.getRoots().length);
+    }
+
+    @Test
+    public void creatingTrieFailsIfWrongPath() {
+        trie = new Trie();
+        trie.createTrie("iBetThereIsNoFileCalledThis.txt");
+        assertEquals(false, trie.findWord("bulldog"));
     }
 
     @Test
@@ -40,6 +47,7 @@ public class TrieTest {
         assertEquals(true, trie.findWord("cardiologist"));
         assertEquals(true, trie.findWord("unapproachable"));
         assertEquals(true, trie.findWord("a"));
+        assertEquals(true, trie.findWord("i"));
     }
 
     @Test
