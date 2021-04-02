@@ -15,6 +15,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Trie trie = new Trie();
+        // Source of the words http://www.mieliestronk.com/corncob_lowercase.txt
         trie.createTrie("english_words_lowercase.txt");
     }
 }
