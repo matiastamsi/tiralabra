@@ -1,8 +1,0 @@
--classpath '/home/tamsi/tiralabra/tiralabra/build/classes/java/main:/home/tamsi/tiralabra/tiralabra/build/resources/main'
--d '/home/tamsi/tiralabra/tiralabra/build/docs/javadoc'
--doctitle 'tiralabra API'
--quiet 
--windowtitle 'tiralabra API'
-'/home/tamsi/tiralabra/tiralabra/src/main/java/tiralabra/domain/Trie.java'
-'/home/tamsi/tiralabra/tiralabra/src/main/java/tiralabra/domain/TrieNode.java'
-'/home/tamsi/tiralabra/tiralabra/src/main/java/tiralabra/Main.java'
