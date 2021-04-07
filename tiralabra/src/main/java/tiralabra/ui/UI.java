@@ -1,32 +1,47 @@
 package tiralabra.ui;
 
-import java.util.Scanner;
-import tiralabra.domain.Trie;
+import tiralabra.domain.Cracker;
 
 /**
+ * The user interface that handles the interacting with the user.
  *
  * @author tamsi
  */
 public class UI {
 
     private IO io;
-    private Trie trie;
+    private Cracker cracker;
 
-    public UI(final IO io, final Trie trie) {
+    public UI(final IO io, final Cracker cracker) {
         this.io = io;
-        this.trie = trie;
+        this.cracker = cracker;
     }
 
     public void run() {
         boolean keepGoing = true;
         while (keepGoing) {
-            io.print("Give a command from:\nexit");
+            io.print("Give a command from the following:"
+                    + "\nexit\ncrack");
             String command = io.nextLine();
             switch (command) {
                 case "exit":
                     io.print("Bye!");
                     keepGoing = false;
                     break;
+                case "crack":
+                    io.print("Let's do some cracking!\n"
+                            + "Give a cipher to be cracked: ");
+                    String cipher = io.nextLine();
+                    cracker.giveCipher(cipher);
+                    io.print("Do you want to see the frequencies"
+                            + " of each letter? (y/n):");
+                    String answer = io.nextLine();
+                    if (answer.equals("y")) {
+                        io.print(cracker.listFrequencies());
+                    }
+                    break;
+                default:
+                    io.print("The command " + command + " not found");
             }
         }
     }

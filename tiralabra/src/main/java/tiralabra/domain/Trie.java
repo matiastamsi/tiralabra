@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class Trie {
 
     private TrieNode[] roots;
+    private char[] alphabets;
 
     /**
      * The trie contains 26 TrieNodes. This constructor creates first TrieNodes
@@ -22,10 +23,12 @@ public class Trie {
      */
     public Trie() {
         this.roots = new TrieNode[26];
+        this.alphabets = new char[26];
         int a = 97; // The ACSII code for a is 97.
         // Fill the array 'roots' using ACSII codes from a-z (97-122).
         for (int i = 0; i < 26; i++) {
             this.roots[i] = new TrieNode((char) a);
+            this.alphabets[i] = (char) a;
             a++;
         }
     }
@@ -93,7 +96,9 @@ public class Trie {
             }
         }
         TrieNode node = findFirstNode(f);
-        if (node == null) return false;
+        if (node == null) {
+            return false;
+        }
         int i = 1;
         int length = word.length();
         while (i < length) {
@@ -127,13 +132,22 @@ public class Trie {
         }
         return null;
     }
-    
+
     /**
      * Getter method to return the array. Mainly for testing purposes.
-     * 
+     *
      * @return the array of roots (first letters)
      */
     public TrieNode[] getRoots() {
         return this.roots;
+    }
+
+    /**
+     * Getter method for alphabets.
+     *
+     * @return array of letters that form the English alphabets.
+     */
+    public char[] getAlphabets() {
+        return this.alphabets;
     }
 }

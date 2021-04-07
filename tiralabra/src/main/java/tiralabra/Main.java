@@ -1,6 +1,7 @@
 
 package tiralabra;
 
+import tiralabra.domain.Cracker;
 import tiralabra.domain.Trie;
 import tiralabra.ui.ConsoleIO;
 import tiralabra.ui.UI;
@@ -20,7 +21,8 @@ public class Main {
         Trie trie = new Trie();
         // Source of the words http://www.mieliestronk.com/corncob_lowercase.txt
         trie.createTrie("english_words_lowercase.txt");
-        UI ui = new UI(new ConsoleIO(), trie);
+        Cracker cracker = new Cracker(trie);
+        UI ui = new UI(new ConsoleIO(), cracker);
         ui.run();
     }
 }
