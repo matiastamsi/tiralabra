@@ -17,6 +17,9 @@ public class UI {
         this.cracker = cracker;
     }
 
+    /**
+     * The method that runs the program.
+     */
     public void run() {
         boolean keepGoing = true;
         while (keepGoing) {
@@ -29,20 +32,28 @@ public class UI {
                     keepGoing = false;
                     break;
                 case "crack":
-                    io.print("Let's do some cracking!\n"
-                            + "Give a cipher to be cracked: ");
-                    String cipher = io.nextLine();
-                    cracker.giveCipher(cipher);
-                    io.print("Do you want to see the frequencies"
-                            + " of each letter? (y/n):");
-                    String answer = io.nextLine();
-                    if (answer.equals("y")) {
-                        io.print(cracker.listFrequencies());
-                    }
+                    crack();
                     break;
                 default:
-                    io.print("The command " + command + " not found");
+                    io.print("The command " + command + " not found\n");
             }
         }
+    }
+
+    /**
+     * Actions when user chooses to crack a cipher.
+     */
+    private void crack() {
+        io.print("Let's do some cracking!\n"
+                + "Give a cipher to be cracked: ");
+        String cipher = io.nextLine();
+        cracker.giveCipher(cipher);
+        io.print("Do you want to see the frequencies"
+                + " of each letter? (y/n):");
+        String answer = io.nextLine();
+        if (answer.equals("y")) {
+            io.print(cracker.listFrequencies());
+        }
+        io.print(cracker.cracked() + "\n");
     }
 }

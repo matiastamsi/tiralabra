@@ -53,7 +53,6 @@ public class TrieTest {
     @Test
     public void unrealWordNotFound() {
         assertEquals(false, trie.findWord("bulkhjsdhkjf"));
-        assertEquals(false, trie.findWord("s"));
         assertEquals(false, trie.findWord("öword"));
         assertEquals(false, trie.findWord("bulldogg"));
     }

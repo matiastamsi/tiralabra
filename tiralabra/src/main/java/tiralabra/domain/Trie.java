@@ -88,13 +88,6 @@ public class Trie {
      */
     public boolean findWord(String word) {
         char f = word.charAt(0);
-        if (word.length() == 1) { // There is one-letter words 'a' and 'I'.
-            if (f == 97 || f == 105) {
-                return true;
-            } else {
-                return false;
-            }
-        }
         TrieNode node = findFirstNode(f);
         if (node == null) {
             return false;
