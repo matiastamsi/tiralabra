@@ -5,6 +5,10 @@ The project for the course [Data Structures Lab 2021 p4](https://tiralabra.githu
 ## Documentation
 [Design document](https://github.com/matiastamsi/tiralabra/blob/main/documentation/design_document.md)
 
+[Implementation document](https://github.com/matiastamsi/tiralabra/blob/main/documentation/implementation_document.md)
+
+[Testing document](https://github.com/matiastamsi/tiralabra/blob/main/documentation/testing_document.md)
+
 ## Weekly reports
 [Week 1 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_1_report.md)
 
