@@ -15,3 +15,5 @@ The project for the course [Data Structures Lab 2021 p4](https://tiralabra.githu
 [Week 2 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_2_report.md)
 
 [Week 3 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_3_report.md)
+
+[Week 4 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_4_report.md)
