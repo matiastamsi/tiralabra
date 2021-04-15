@@ -208,8 +208,12 @@ public final class Cracker {
                 Sentence sentence = s;
                 char oldChar = pileC.charAt(i);
                 char newChar = pileE.charAt(j);
+                String copy = sentence.toString();
                 sentence.replace(oldChar, newChar);
-                crack(sentence, i + 1, j + 1);
+                if (!sentence.toString().equals(copy)) {
+                crack(sentence, i, j + 1);
+                }
+                sentence.replace(newChar, oldChar);
             }
         }
         return sentence;
