@@ -1,17 +1,19 @@
-
 package tiralabra.ui;
 
 /**
  * The IO class that is been used for testing purposes.
+ *
  * @author tamsi
  */
 public class StubIO implements IO {
+
     private int pointer;
     private final String[] inputs;
     private String[] outputs;
-    
+
     /**
      * Constructor initializes input and output arrays and the pointer.
+     *
      * @param inputs array of strings that are test inputs
      */
     public StubIO(final String[] inputs) {
@@ -19,9 +21,10 @@ public class StubIO implements IO {
         this.pointer = 0;
         this.outputs = new String[inputs.length];
     }
-    
+
     /**
      * Go through the array as it was a user giving inputs.
+     *
      * @return String that is an 'input'
      */
     @Override
@@ -33,9 +36,10 @@ public class StubIO implements IO {
         }
         return "";
     }
-    
+
     /**
      * Add an output to the array (create also larger array for that)
+     *
      * @param output is a String that is added to outputs.
      */
     @Override
@@ -47,14 +51,20 @@ public class StubIO implements IO {
         newArray[newArray.length - 1] = output;
         this.outputs = newArray;
     }
-    
+
+    /**
+     * Tell whether there is still next line coming.
+     *
+     * @return boolean value
+     */
     @Override
     public boolean hasNextLine() {
         return pointer < inputs.length;
     }
-    
+
     /**
      * Getter method to get outputs
+     *
      * @return array of outputs as strings
      */
     public String[] getOutputs() {

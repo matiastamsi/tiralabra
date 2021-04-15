@@ -1,53 +1,50 @@
 package tiralabra.domain;
 
 /**
- * Object that
+ * An object that represents a sentence that is actually
+ * an array of strings. The sentence name doesn't mean that
+ * it is readable.
  *
  * @author tamsi
  */
 public class Sentence {
 
-    private Piece[] pieces;
-    private char[][] equivalentLetters;
-    private int countOfCorrectOnes;
+    private String[] pieces;
 
-    public Sentence(Piece[] pieces, char[] alphabets) {
+    public Sentence(String[] pieces) {
         this.pieces = pieces;
-        this.countOfCorrectOnes = 0;
-        this.equivalentLetters = new char[26][2];
-        for (int i = 0; i < 26; i++) {
-            this.equivalentLetters[i][0] = alphabets[i];
-            this.equivalentLetters[i][1] = 0;
-        }
     }
 
-    public Piece[] getPieces() {
+    public String[] getPieces() {
         return this.pieces;
     }
 
-    public void increaseCountOfCorrectOnes() {
-        this.countOfCorrectOnes++;
-    }
+    public void replace(char x, char y) {
 
-    public boolean allCorrect() {
-        return this.countOfCorrectOnes == this.pieces.length;
-    }
-
-    public void setEquivalent(char c1, char c2) {
-        for (int i = 0; i < 26; i++) {
-            if (this.equivalentLetters[i][0] == c1) {
-                this.equivalentLetters[i][1] = c2;
+        if (!letterExists(y)) {
+            for (int i = 0; i < this.pieces.length; i++) {
+                this.pieces[i] = this.pieces[i].replace(x, y);
             }
         }
     }
 
-    public char getEquivalent(char c) {
-        for (int i = 0; i < 26; i++) {
-            if (this.equivalentLetters[i][1] == c) {
-                return this.equivalentLetters[i][0];
+    private boolean letterExists(char c) {
+        for (String p : this.pieces) {
+            for (int i = 0; i < p.length(); i++) {
+                if (p.charAt(i) == c) {
+                    return true;
+                }
             }
         }
-        return 0;
+        return false;
     }
 
+    @Override
+    public String toString() {
+        String str = "";
+        for (String p : this.pieces) {
+            str += p + " ";
+        }
+        return str;
+    }
 }

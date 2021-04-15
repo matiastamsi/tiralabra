@@ -16,7 +16,16 @@ public final class Cracker {
     private Sentence sentence;
     private final float[] frequenciesInEnglish;
     private final float[] frequenciesInCipher;
+    private String pileC;
+    private String pileE;
 
+    /**
+     * Cracker has knowledge of the letters in English and in a cipher. A trie
+     * is given but other things cracker finds out later on when methods are
+     * called.
+     *
+     * @param trie using the trie that is already been made.
+     */
     public Cracker(Trie trie) {
         this.trie = trie;
         this.alphabets = trie.getAlphabets();
@@ -25,8 +34,16 @@ public final class Cracker {
         // Source is https://en.wikipedia.org/wiki/Letter_frequency
         this.frequenciesInEnglish = loadFrequenciesInEnglish("frequencies.txt");
         this.frequenciesInCipher = new float[26];
+        this.pileC = "";
+        this.pileE = "";
     }
 
+    /**
+     * A method to load the frequencies from the file.
+     *
+     * @param path location of the file
+     * @return array of floats
+     */
     public float[] loadFrequenciesInEnglish(String path) {
         float[] array = new float[26];
         int i = 0;
@@ -43,6 +60,12 @@ public final class Cracker {
         return array;
     }
 
+    /**
+     * When the cracker is been created it gets an empty cipher. This method
+     * initializes those instances that have something to do with the cipher.
+     *
+     * @param cipher given as a string
+     */
     public void giveCipher(String cipher) {
         this.cipher = cipher.toLowerCase();
         this.sentence = createSentence(this.cipher);
@@ -59,27 +82,89 @@ public final class Cracker {
             }
             this.frequenciesInCipher[i] = (float) count / countOfLetters;
         }
+        order(); // Order the frequencies to match after getting the cipher.
     }
 
-    public Sentence createSentence(String str) {
-        String[] splitted = str.split(" ");
-        Piece[] pieces = new Piece[splitted.length];
-        for (int i = 0; i < pieces.length; i++) {
-            pieces[i] = new Piece(splitted[i]);
+    /**
+     * A helper method that calls 26 times to find the letters with closest
+     * frequencies and add those to the piles.
+     */
+    private void order() {
+        int countOfHandledOnes = 0;
+        while (countOfHandledOnes < 26) {
+            this.pileE += next(this.frequenciesInEnglish, pileE);
+            this.pileC += next(this.frequenciesInCipher, pileC);
+            countOfHandledOnes++;
         }
-        return new Sentence(pieces, this.alphabets);
     }
 
+    /**
+     * A helper method that checks which letter has the highest frequency and
+     * returns it if it is not already added to handled letters.
+     *
+     * @param freq array of frequencies
+     * @param handledLetters string of handled chars
+     * @return a char that has currently the highest frequency.
+     */
+    private char next(float[] freq, String handledLetters) {
+        float biggest = 0;
+        char c = 0;
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] > biggest) {
+                boolean handled = false;
+                for (int j = 0; j < handledLetters.length(); j++) {
+                    if (handledLetters.charAt(j) == this.alphabets[i]) {
+                        handled = true;
+                        break;
+                    }
+                }
+                if (!handled) {
+                    biggest = freq[i];
+                    c = this.alphabets[i];
+                }
+            }
+        }
+        return c;
+    }
+
+    /**
+     * A private method that is used when provided the cipher as a string. It
+     * splits the sentence into pieces and creates Sentence object.
+     *
+     * @param str the cipher as a string
+     * @return the sentence object from that string
+     */
+    private Sentence createSentence(String str) {
+        String[] splitted = str.split(" ");
+        String[] pieces = new String[splitted.length];
+        for (int i = 0; i < pieces.length; i++) {
+            pieces[i] = splitted[i];
+        }
+        return new Sentence(pieces);
+    }
+
+    /**
+     * A private method to count the letters so that the frequencies can be
+     * solved.
+     *
+     * @param cipher the string that is been analysed
+     * @return the count
+     */
     private int countOfLetters(String cipher) {
         int count = 0;
         for (int i = 0; i < cipher.length(); i++) {
-            if (cipher.charAt(i) != 32) {
+            if (cipher.charAt(i) != 32) { // The space isn't a letter
                 count++;
             }
         }
         return count;
     }
 
+    /**
+     * A method that provides the frequencies and matching letters as a string.
+     *
+     * @return the answer as a string.
+     */
     public String listFrequencies() {
         String answer = "[letter] / [freq. in English] / [freq. in the cipher]"
                 + "\n";
@@ -87,95 +172,61 @@ public final class Cracker {
             answer += this.alphabets[i] + " / " + this.frequenciesInEnglish[i]
                     + " / " + this.frequenciesInCipher[i] + "\n";
         }
+        answer += "Matching pairs:\n" + pileE + "\n" + pileC;
         return answer;
     }
 
+    /**
+     * This method launches the backtracking and provides the correct sentence
+     * in English.
+     *
+     * @return sentence as a string
+     */
     public String cracked() {
-        String answer = "";
-        Sentence s = crack(this.sentence);
-        for (Piece p : s.getPieces()) {
-            answer += p.getString() + " ";
-        }
-        return answer;
+        Sentence s = crack(this.sentence, 0, 0);
+        return s.toString();
     }
 
-    private Sentence crack(Sentence s) {
-        Sentence sentence = s;
-        while (!sentence.allCorrect()) {
-            sentence = crackPieces(sentence);
-        }
+    /**
+     * The method that recursively tries to find matching letters from the
+     * cipher and from English.
+     *
+     * @param s sentence
+     * @param indexC is the index in the cipher's ordered letter pile.
+     * @param indexE is the index in the ordered pile of English letters.
+     * @return Sentence object.
+     */
+    private Sentence crack(Sentence s, int indexC, int indexE) {
 
+        System.out.println(s.toString());
+
+        if (allCorrect(s.getPieces())) {
+            return s;
+        }
+        for (int i = indexC; i < pileC.length(); i++) {
+            for (int j = indexE; j < pileE.length(); j++) {
+                Sentence sentence = s;
+                char oldChar = pileC.charAt(i);
+                char newChar = pileE.charAt(j);
+                sentence.replace(oldChar, newChar);
+                crack(sentence, i + 1, j + 1);
+            }
+        }
         return sentence;
     }
 
-    private Sentence crackPieces(Sentence s) {
-        Sentence sentence = s;
-        for (Piece p : sentence.getPieces()) {
-
-            Piece solvedPiece = crackPiece(p, sentence, 0);
-            for (int i = 0; i < p.getLength(); i++) {
-                if (p.getCharAt(i) != solvedPiece.getCharAt(i)) {
-                    sentence.setEquivalent(p.getCharAt(i), solvedPiece.getCharAt(i));
-                }
-            }
-            p = solvedPiece;
-            sentence.increaseCountOfCorrectOnes();
-
-        }
-        return sentence;
-    }
-
-    private Piece crackPiece(Piece p, Sentence s, int i) {
-
-        if (trie.findWord(p.getString())) {
-            return p;
-        }
-
-        if (i == p.getLength()) {
-            return crackPiece(p, s, 0);
-        }
-
-        int index = i;
-        Piece piece = p;
-        String willFound = piece.getString().substring(0, index + 1);
-        while (trie.findWord(willFound)) {
-            willFound += piece.getCharAt(index + 1);
-            index++;
-        }
-        char currentChar = p.getCharAt(index);
-        char newChar = s.getEquivalent(currentChar);
-        if (newChar != 0) {
-            String replace = piece.getString().replace(currentChar, newChar);
-            piece.setString(replace);
-            piece.setTriedChars(index, newChar);
-            return crackPiece(piece, s, index + 1);
-        }
-        newChar = findNextToTest(piece, currentChar);
-        String replace = piece.getString().replace(currentChar, newChar);
-        piece.setString(replace);
-        piece.setTriedChars(index, newChar);
-        return crackPiece(piece, s, index + 1);
-    }
-
-    private char findNextToTest(Piece p, char c) {
-        float freq = 0;
-        for (int i = 0; i < this.alphabets.length; i++) {
-            if (this.alphabets[i] == c) {
-                freq = this.frequenciesInCipher[i];
-                break;
+    /**
+     * Tells whether all pieces are words.
+     *
+     * @param pieces sentence's pieces
+     * @return boolean value
+     */
+    private boolean allCorrect(String[] pieces) {
+        for (String p : pieces) {
+            if (!trie.findWord(p)) {
+                return false;
             }
         }
-        float smallestDifference = Math.abs((float) (freq - this.frequenciesInEnglish[0]));
-        char closest = this.alphabets[0];
-        for (int i = 1; i < this.frequenciesInEnglish.length; i++) {
-            float diff = Math.abs((float) freq - this.frequenciesInEnglish[i]);
-            if (smallestDifference >= diff) {
-                smallestDifference = diff;
-                if (!p.isTried(this.alphabets[i])) {
-                    closest = this.alphabets[i];
-                }
-            }
-        }
-        return closest;
+        return true;
     }
 }
