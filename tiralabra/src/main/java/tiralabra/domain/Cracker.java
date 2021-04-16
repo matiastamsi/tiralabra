@@ -13,7 +13,6 @@ public final class Cracker {
     private final Trie trie;
     private final char[] alphabets;
     private String cipher;
-    private Sentence sentence;
     private final float[] frequenciesInEnglish;
     private final float[] frequenciesInCipher;
     private String pileC;
@@ -29,7 +28,6 @@ public final class Cracker {
     public Cracker(Trie trie) {
         this.trie = trie;
         this.alphabets = trie.getAlphabets();
-        this.sentence = null;
         this.cipher = "";
         // Source is https://en.wikipedia.org/wiki/Letter_frequency
         this.frequenciesInEnglish = loadFrequenciesInEnglish("frequencies.txt");
@@ -68,7 +66,6 @@ public final class Cracker {
      */
     public void giveCipher(String cipher) {
         this.cipher = cipher.toLowerCase();
-        this.sentence = createSentence(this.cipher);
 
         int countOfLetters = countOfLetters(this.cipher);
 
@@ -128,22 +125,6 @@ public final class Cracker {
     }
 
     /**
-     * A private method that is used when provided the cipher as a string. It
-     * splits the sentence into pieces and creates Sentence object.
-     *
-     * @param str the cipher as a string
-     * @return the sentence object from that string
-     */
-    private Sentence createSentence(String str) {
-        String[] splitted = str.split(" ");
-        String[] pieces = new String[splitted.length];
-        for (int i = 0; i < pieces.length; i++) {
-            pieces[i] = splitted[i];
-        }
-        return new Sentence(pieces);
-    }
-
-    /**
      * A private method to count the letters so that the frequencies can be
      * solved.
      *
@@ -180,43 +161,40 @@ public final class Cracker {
      * This method launches the backtracking and provides the correct sentence
      * in English.
      *
-     * @return sentence as a string
+     * @return solved pieces as a string
      */
     public String cracked() {
-        Sentence s = crack(this.sentence, 0, 0);
-        return s.toString();
+        String[] pieces = this.cipher.split(" ");
+        pieces = crack(pieces, 0, 0);
+        String answer = "";
+        for (String s : pieces) {
+            answer += s + " ";
+        }
+        return answer;
     }
 
     /**
      * The method that recursively tries to find matching letters from the
      * cipher and from English.
      *
-     * @param s sentence
+     * @param pieces array of strings
      * @param indexC is the index in the cipher's ordered letter pile.
      * @param indexE is the index in the ordered pile of English letters.
-     * @return Sentence object.
+     * @return array of strings
      */
-    private Sentence crack(Sentence s, int indexC, int indexE) {
+    private String[] crack(String[] pieces, int indexC, int indexE) {
 
-        System.out.println(s.toString());
-
-        if (allCorrect(s.getPieces())) {
-            return s;
+        //System.out.println(s.toString());
+        if (someCorrect(pieces)) {
+            return pieces;
         }
         for (int i = indexC; i < pileC.length(); i++) {
-            for (int j = indexE; j < pileE.length(); j++) {
-                Sentence sentence = s;
+            for (int j = 0; j < pileE.length(); j++) {
                 char oldChar = pileC.charAt(i);
                 char newChar = pileE.charAt(j);
-                String copy = sentence.toString();
-                sentence.replace(oldChar, newChar);
-                if (!sentence.toString().equals(copy)) {
-                crack(sentence, i, j + 1);
-                }
-                sentence.replace(newChar, oldChar);
             }
         }
-        return sentence;
+        return null;
     }
 
     /**
@@ -225,12 +203,13 @@ public final class Cracker {
      * @param pieces sentence's pieces
      * @return boolean value
      */
-    private boolean allCorrect(String[] pieces) {
+    private boolean someCorrect(String[] pieces) {
+        int counter = 0;
         for (String p : pieces) {
             if (!trie.findWord(p)) {
-                return false;
+                counter++;
             }
         }
-        return true;
+        return (counter <= pieces.length / 2);
     }
 }
