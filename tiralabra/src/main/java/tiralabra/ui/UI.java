@@ -62,7 +62,8 @@ public class UI {
             String manipulatedAlphabets = io.nextLine();
             io.print("Give something to be changed:\n");
             String normalText = io.nextLine();
-            cipher = generateCipher(manipulatedAlphabets, normalText);
+            cipher = cracker.generate("abcdefghijklmnopqrstuvwxyz",
+                    manipulatedAlphabets, normalText);
             io.print("The cipher is:\n" + cipher + "\n");
         } else {
             io.print("Give a cipher:\n");
@@ -78,25 +79,4 @@ public class UI {
         io.print(cracker.cracked() + "\n");
     }
 
-    /**
-     * The method to generate a cipher.
-     *
-     * @param manipulated alphabets reordered
-     * @param text to be encrypted
-     * @return a cipher
-     */
-    private String generateCipher(String manipulated, String text) {
-        String cipher = text;
-        String alphabets = "abcdefghijklmnopqrstuvwxyz";
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) != 32) {
-                for (int j = 0; j < alphabets.length(); j++) {
-                    if (text.charAt(i) == alphabets.charAt(j)) {
-                        cipher = cipher.replace(text.charAt(i), manipulated.charAt(j));
-                    }
-                }
-            }
-        }
-        return cipher;
-    }
 }

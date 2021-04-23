@@ -17,6 +17,7 @@ public final class Cracker {
     private final float[] frequenciesInCipher;
     private String pileC;
     private String pileE;
+    private String[] pieces;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
@@ -93,6 +94,22 @@ public final class Cracker {
             this.pileC += next(this.frequenciesInCipher, pileC);
             countOfHandledOnes++;
         }
+        // Fill missing letters by assuming based on pileE.
+
+        for (int i = 0; i < pileE.length(); i++) {
+            char cE = pileE.charAt(i);
+            boolean found = false;
+            for (int j = 0; j < pileC.length(); j++) {
+                if (pileC.charAt(j) == cE) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                pileC += cE;
+            }
+        }
+
     }
 
     /**
@@ -134,7 +151,7 @@ public final class Cracker {
     private int countOfLetters(String cipher) {
         int count = 0;
         for (int i = 0; i < cipher.length(); i++) {
-            if (cipher.charAt(i) != 32) { // The space isn't a letter
+            if (cipher.charAt(i) >= 97 && cipher.charAt(i) <= 122) {
                 count++;
             }
         }
@@ -164,37 +181,28 @@ public final class Cracker {
      * @return solved pieces as a string
      */
     public String cracked() {
-        String[] pieces = this.cipher.split(" ");
-        pieces = crack(pieces, 0, 0);
+        // In an ideal case, frequencies do match. Let's check it first.
+        String str = generate(pileC, pileE, this.cipher);
+        if (allCorrect(str.split(" "))) {
+            return str;
+        }
+        this.pieces = this.cipher.split(" ");
+        this.pieces = crack(this.pieces);
         String answer = "";
-        for (String s : pieces) {
+        for (String s : this.pieces) {
             answer += s + " ";
         }
         return answer;
     }
 
-    /**
-     * The method that recursively tries to find matching letters from the
-     * cipher and from English.
-     *
-     * @param pieces array of strings
-     * @param indexC is the index in the cipher's ordered letter pile.
-     * @param indexE is the index in the ordered pile of English letters.
-     * @return array of strings
-     */
-    private String[] crack(String[] pieces, int indexC, int indexE) {
+    private String[] crack(String[] p) {
+        if (allCorrect(p)) {
+            return p;
+        }
+        String[] pieces = p;
 
-        //System.out.println(s.toString());
-        if (someCorrect(pieces)) {
-            return pieces;
-        }
-        for (int i = indexC; i < pileC.length(); i++) {
-            for (int j = 0; j < pileE.length(); j++) {
-                char oldChar = pileC.charAt(i);
-                char newChar = pileE.charAt(j);
-            }
-        }
-        return pieces;
+        return null;
+
     }
 
     /**
@@ -203,13 +211,39 @@ public final class Cracker {
      * @param pieces sentence's pieces
      * @return boolean value
      */
-    private boolean someCorrect(String[] pieces) {
-        int counter = 0;
+    private boolean allCorrect(String[] pieces) {
         for (String p : pieces) {
             if (!trie.findWord(p)) {
-                counter++;
+                return false;
             }
         }
-        return (counter == pieces.length);
+        return true;
+    }
+
+    /**
+     * This method is used either to generate a cipher based on manipulated
+     * alphabets (reordered) and known text. Also, this method is called first
+     * to check whether frequencies match without cracking just replacing those.
+     * 
+     * @param o old chars
+     * @param n new chars
+     * @param orginal text
+     * @return text where old chars are replaced with the pairs
+     */
+    public String generate(String o, String n, String orginal) {
+        String str = "";
+        for (int i = 0; i < orginal.length(); i++) {
+            char c = orginal.charAt(i);
+            if (c <= 122 && c >= 97) {
+                for (int j = 0; j < o.length(); j++) {
+                    if (o.charAt(j) == c) {
+                        str += n.charAt(j);
+                    }
+                }
+            } else if (c == 32) {
+                str += " ";
+            }
+        }
+        return str;
     }
 }
