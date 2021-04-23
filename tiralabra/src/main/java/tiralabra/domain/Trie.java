@@ -14,8 +14,8 @@ import java.util.Scanner;
  */
 public class Trie {
 
-    private TrieNode[] roots;
-    private char[] alphabets;
+    private final TrieNode[] roots;
+    private final char[] alphabets;
 
     /**
      * The trie contains 26 TrieNodes. This constructor creates first TrieNodes
@@ -106,13 +106,9 @@ public class Trie {
                     break;
                 }
             }
-            if (!found) {
+            if (!found || (i == length - 1 && !node.isEndOfWord())) {
                 return false;
             }
-            if (i == length - 1 && !node.isEndOfWord()) {
-                return false;
-            }
-
             i++;
         }
         return true;

@@ -1,26 +1,23 @@
-
 package tiralabra.domain;
 
 /**
- * An object that represents a node of
- * the Trie object. It is simply a node
- * that has a char value (alphabet) and information about
- * its parent and child/children if has any.
+ * An object that represents a node of the Trie object. It is simply a node that
+ * has a char value (alphabet) and information about its parent and
+ * child/children if has any.
  *
  * @author tamsi
  */
 public class TrieNode {
 
-    private char alphabet;
+    private final char alphabet;
     private TrieNode parent;
     private TrieNode[] children;
     private boolean isEndOfWord;
-    
+
     /**
-     * As the object is part of a word, it has a char value,
-     * a parent (if not the first letter) and child/children
-     * (if not the last letter).
-     * 
+     * As the object is part of a word, it has a char value, a parent (if not
+     * the first letter) and child/children (if not the last letter).
+     *
      * @param alphabet is a char that is given for the node.
      */
     public TrieNode(char alphabet) {
@@ -32,6 +29,7 @@ public class TrieNode {
 
     /**
      * Set a parent that is a letter before this one.
+     *
      * @param parent is a TrieNode
      */
     public void setParent(TrieNode parent) {
@@ -40,7 +38,7 @@ public class TrieNode {
 
     /**
      * Set a child to the array of nodes children.
-     * 
+     *
      * @param child is a TrieNode
      */
     public void setChild(TrieNode child) {
@@ -55,7 +53,7 @@ public class TrieNode {
 
     /**
      * A getter method that returns the char value.
-     * 
+     *
      * @return the alphabet that is a char.
      */
     public char getNode() {
@@ -64,6 +62,7 @@ public class TrieNode {
 
     /**
      * A getter method to return the parent.
+     *
      * @return a parent node
      */
     public TrieNode getParent() {
@@ -72,19 +71,25 @@ public class TrieNode {
 
     /**
      * A getter method to return children nodes.
+     *
      * @return a array of TrieNodes
      */
     public TrieNode[] getChildren() {
         return this.children;
     }
-    
+
     /**
      * Setter method for isEndOfWord.
      */
     public void setToBeEndOfWord() {
         this.isEndOfWord = true;
     }
-    
+
+    /**
+     * Method to check if some word ends to this node.
+     *
+     * @return
+     */
     public boolean isEndOfWord() {
         return this.isEndOfWord;
     }

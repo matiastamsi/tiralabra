@@ -1,4 +1,3 @@
-
 package tiralabra;
 
 import tiralabra.domain.Cracker;
@@ -8,13 +7,14 @@ import tiralabra.ui.UI;
 
 /**
  * The main class of the application.
- * 
+ *
  * @author tamsi
  */
 public class Main {
 
     /**
-     * 
+     * The main method.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
