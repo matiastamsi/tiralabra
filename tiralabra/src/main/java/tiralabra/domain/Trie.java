@@ -74,7 +74,10 @@ public class Trie {
                 TrieNode child = new TrieNode(c);
                 child.setParent(node);
                 node.setChild(child);
-                node = node.getChildren()[node.getChildren().length - 1];
+                node = child;
+            }
+            if (i == word.length() - 1) {
+                node.setToBeEndOfWord();
             }
             i++;
         }
@@ -106,6 +109,10 @@ public class Trie {
             if (!found) {
                 return false;
             }
+            if (i == length - 1 && !node.isEndOfWord()) {
+                return false;
+            }
+
             i++;
         }
         return true;

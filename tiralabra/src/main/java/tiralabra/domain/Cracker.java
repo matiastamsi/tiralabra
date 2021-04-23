@@ -194,7 +194,7 @@ public final class Cracker {
                 char newChar = pileE.charAt(j);
             }
         }
-        return null;
+        return pieces;
     }
 
     /**
@@ -210,6 +210,6 @@ public final class Cracker {
                 counter++;
             }
         }
-        return (counter <= pieces.length / 2);
+        return (counter == pieces.length);
     }
 }

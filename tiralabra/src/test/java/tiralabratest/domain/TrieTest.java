@@ -55,6 +55,8 @@ public class TrieTest {
         assertEquals(false, trie.findWord("bulkhjsdhkjf"));
         assertEquals(false, trie.findWord("öword"));
         assertEquals(false, trie.findWord("bulldogg"));
+        assertEquals(false, trie.findWord("fishi"));
+        assertEquals(false, trie.findWord("bulldo"));
     }
 
 }

@@ -14,6 +14,7 @@ public class TrieNode {
     private char alphabet;
     private TrieNode parent;
     private TrieNode[] children;
+    private boolean isEndOfWord;
     
     /**
      * As the object is part of a word, it has a char value,
@@ -26,6 +27,7 @@ public class TrieNode {
         this.alphabet = alphabet;
         this.parent = null;
         this.children = new TrieNode[0];
+        this.isEndOfWord = false;
     }
 
     /**
@@ -74,5 +76,16 @@ public class TrieNode {
      */
     public TrieNode[] getChildren() {
         return this.children;
+    }
+    
+    /**
+     * Setter method for isEndOfWord.
+     */
+    public void setToBeEndOfWord() {
+        this.isEndOfWord = true;
+    }
+    
+    public boolean isEndOfWord() {
+        return this.isEndOfWord;
     }
 }
