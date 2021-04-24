@@ -62,7 +62,7 @@ public class UI {
             String manipulatedAlphabets = io.nextLine();
             io.print("Give something to be changed:\n");
             String normalText = io.nextLine();
-            cipher = cracker.generate("abcdefghijklmnopqrstuvwxyz",
+            cipher = generate("abcdefghijklmnopqrstuvwxyz",
                     manipulatedAlphabets, normalText);
             io.print("The cipher is:\n" + cipher + "\n");
         } else {
@@ -77,6 +77,32 @@ public class UI {
             io.print(cracker.listFrequencies());
         }
         io.print(cracker.cracked() + "\n");
+    }
+
+    /**
+     * This method is used to generate a cipher based on manipulated alphabets
+     * (reordered) and known text.
+     *
+     * @param o old chars
+     * @param n new chars
+     * @param orginal text
+     * @return text where old chars are replaced with the pairs
+     */
+    private String generate(String o, String n, String orginal) {
+        String str = "";
+        for (int i = 0; i < orginal.length(); i++) {
+            char c = orginal.charAt(i);
+            if (c <= 122 && c >= 97) {
+                for (int j = 0; j < o.length(); j++) {
+                    if (o.charAt(j) == c) {
+                        str += n.charAt(j);
+                    }
+                }
+            } else if (c == 32) {
+                str += " ";
+            }
+        }
+        return str;
     }
 
 }

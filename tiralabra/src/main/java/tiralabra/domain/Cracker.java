@@ -15,9 +15,8 @@ public final class Cracker {
     private String cipher;
     private final float[] frequenciesInEnglish;
     private final float[] frequenciesInCipher;
-    private String pileC;
-    private String pileE;
-    private String[] pieces;
+    private int differentOptionsToReplace;
+    private int countOfLetters;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
@@ -28,13 +27,13 @@ public final class Cracker {
      */
     public Cracker(Trie trie) {
         this.trie = trie;
-        this.alphabets = trie.getAlphabets();
+        this.alphabets = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         this.cipher = "";
         // Source is https://en.wikipedia.org/wiki/Letter_frequency
         this.frequenciesInEnglish = loadFrequenciesInEnglish("frequencies.txt");
         this.frequenciesInCipher = new float[26];
-        this.pileC = "";
-        this.pileE = "";
+        this.differentOptionsToReplace = 0;
+        this.countOfLetters = 0;
     }
 
     /**
@@ -67,8 +66,7 @@ public final class Cracker {
      */
     public void giveCipher(String cipher) {
         this.cipher = cipher.toLowerCase();
-
-        int countOfLetters = countOfLetters(this.cipher);
+        this.countOfLetters = countOfLetters(this.cipher);
 
         for (int i = 0; i < this.alphabets.length; i++) {
             char c = this.alphabets[i];
@@ -78,67 +76,11 @@ public final class Cracker {
                     count++;
                 }
             }
-            this.frequenciesInCipher[i] = (float) count / countOfLetters;
-        }
-        order(); // Order the frequencies to match after getting the cipher.
-    }
-
-    /**
-     * A helper method that calls 26 times to find the letters with closest
-     * frequencies and add those to the piles.
-     */
-    private void order() {
-        int countOfHandledOnes = 0;
-        while (countOfHandledOnes < 26) {
-            this.pileE += next(this.frequenciesInEnglish, pileE);
-            this.pileC += next(this.frequenciesInCipher, pileC);
-            countOfHandledOnes++;
-        }
-        // Fill missing letters by assuming based on pileE.
-
-        for (int i = 0; i < pileE.length(); i++) {
-            char cE = pileE.charAt(i);
-            boolean found = false;
-            for (int j = 0; j < pileC.length(); j++) {
-                if (pileC.charAt(j) == cE) {
-                    found = true;
-                    break;
-                }
+            if (count > 0) {
+                this.differentOptionsToReplace++;
             }
-            if (!found) {
-                pileC += cE;
-            }
+            this.frequenciesInCipher[i] = (float) count / this.countOfLetters;
         }
-
-    }
-
-    /**
-     * A helper method that checks which letter has the highest frequency and
-     * returns it if it is not already added to handled letters.
-     *
-     * @param freq array of frequencies
-     * @param handledLetters string of handled chars
-     * @return a char that has currently the highest frequency.
-     */
-    private char next(float[] freq, String handledLetters) {
-        float biggest = 0;
-        char c = 0;
-        for (int i = 0; i < freq.length; i++) {
-            if (freq[i] > biggest) {
-                boolean handled = false;
-                for (int j = 0; j < handledLetters.length(); j++) {
-                    if (handledLetters.charAt(j) == this.alphabets[i]) {
-                        handled = true;
-                        break;
-                    }
-                }
-                if (!handled) {
-                    biggest = freq[i];
-                    c = this.alphabets[i];
-                }
-            }
-        }
-        return c;
     }
 
     /**
@@ -170,7 +112,6 @@ public final class Cracker {
             answer += this.alphabets[i] + " / " + this.frequenciesInEnglish[i]
                     + " / " + this.frequenciesInCipher[i] + "\n";
         }
-        answer += "Matching pairs:\n" + pileE + "\n" + pileC;
         return answer;
     }
 
@@ -181,28 +122,74 @@ public final class Cracker {
      * @return solved pieces as a string
      */
     public String cracked() {
-        // In an ideal case, frequencies do match. Let's check it first.
-        String str = generate(pileC, pileE, this.cipher);
-        if (allCorrect(str.split(" "))) {
-            return str;
-        }
-        this.pieces = this.cipher.split(" ");
-        this.pieces = crack(this.pieces);
+        Letter[] letters = setUpLetters();
+        String[] cracked = crack(this.cipher.split(" "), "", "", letters, 0,
+                this.differentOptionsToReplace);
         String answer = "";
-        for (String s : this.pieces) {
+        for (String s : cracked) {
             answer += s + " ";
         }
         return answer;
     }
 
-    private String[] crack(String[] p) {
-        if (allCorrect(p)) {
-            return p;
-        }
+    private String[] crack(String[] p, String r, String t, Letter[] l, int index, int options) {
+        String replaced = r;
+        String taken = t;
         String[] pieces = p;
+        Letter[] letters = l;
+        if (index < options) {
+            for (char c : this.cipher.toCharArray()) {
+                boolean alreadyReplaced = false;
+                for (char x : replaced.toCharArray()) {
+                    if (x == c) {
+                        alreadyReplaced = true;
+                        break;
+                    }
+                }
+                if (!alreadyReplaced && c != 32) {
+                    int indexOfChar = 0;
+                    for (int i = 0; i < this.alphabets.length; i++) {
+                        if (this.alphabets[i] == c) {
+                            indexOfChar = i;
+                        }
+                    }
+                    Letter letter = letters[indexOfChar];
+                    char newChar = letter.getFirst();
+                    boolean goNext = false;
+                    for (char x : taken.toCharArray()) {
+                        if (x == newChar) {
+                            goNext = true;
+                            break;
+                        }
+                    }
+                    if (newChar != 0 && !goNext) {
 
-        return null;
-
+                        Letter copyLetter = letter;
+                        String copyReplaced = replaced;
+                        String copyTaken = taken;
+                        String[] copyPieces = pieces;
+                        newChar = letter.pollFirst();
+                        letters[indexOfChar] = letter;
+                        taken += newChar;
+                        for (int i = 0; i < pieces.length; i++) {
+                            pieces[i] = pieces[i].replace(c, newChar);
+                        }
+                        replaced += c;
+                        crack(pieces, replaced, taken, letters, index + 1, options);
+                        replaced = copyReplaced;
+                        pieces = copyPieces;
+                        taken = copyTaken;
+                        letters[indexOfChar] = copyLetter;
+                        crack(pieces, replaced, taken, letters, index, options);
+                    }
+                }
+            }
+        } else {
+            if (allCorrect(p)) {
+                return p;
+            }
+        }
+        return crack(pieces, "", "", letters, 0, options);
     }
 
     /**
@@ -213,6 +200,7 @@ public final class Cracker {
      */
     private boolean allCorrect(String[] pieces) {
         for (String p : pieces) {
+            System.out.println(p);
             if (!trie.findWord(p)) {
                 return false;
             }
@@ -221,29 +209,17 @@ public final class Cracker {
     }
 
     /**
-     * This method is used either to generate a cipher based on manipulated
-     * alphabets (reordered) and known text. Also, this method is called first
-     * to check whether frequencies match without cracking just replacing those.
-     * 
-     * @param o old chars
-     * @param n new chars
-     * @param orginal text
-     * @return text where old chars are replaced with the pairs
+     * Creates an array of Letter objects.
+     *
+     * @return array
      */
-    public String generate(String o, String n, String orginal) {
-        String str = "";
-        for (int i = 0; i < orginal.length(); i++) {
-            char c = orginal.charAt(i);
-            if (c <= 122 && c >= 97) {
-                for (int j = 0; j < o.length(); j++) {
-                    if (o.charAt(j) == c) {
-                        str += n.charAt(j);
-                    }
-                }
-            } else if (c == 32) {
-                str += " ";
-            }
+    private Letter[] setUpLetters() {
+        Letter[] letters = new Letter[26];
+        for (int i = 0; i < 26; i++) {
+            Letter letter = new Letter(this.alphabets[i], this.frequenciesInCipher[i]);
+            letter.setUpQueue(this.frequenciesInEnglish);
+            letters[i] = letter;
         }
-        return str;
+        return letters;
     }
 }

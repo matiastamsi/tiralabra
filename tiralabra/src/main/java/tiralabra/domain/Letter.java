@@ -6,34 +6,79 @@
 package tiralabra.domain;
 
 /**
- * An object that is been used while backtracking and finding
- * best guesses to do.
- * 
+ * An object that is been used while backtracking and finding best guesses to
+ * do.
+ *
  * @author tamsi
  */
-public class Letter implements Comparable<Letter> {
-    private float freqEnglish;
-    private float freqCipher;
-    private int index;
-    
-    public Letter(float fE, float fC, int i) {
-        this.freqEnglish = fE;
-        this.freqCipher = fC;
-        this.index = i;
-    }
-    
-    public float distance(Letter l) {
-        return Math.abs(this.freqEnglish - this.freqCipher);
+public class Letter {
+
+    private char c;
+    private float frequency;
+    private String queue;
+    private int pointer;
+    private String alphabets;
+
+    /**
+     *
+     * @param c char from cipher
+     * @param f frequency of the char
+     */
+    public Letter(char c, float f) {
+        this.c = c;
+        this.frequency = f;
+        this.queue = "";
+        this.pointer = 0;
+        this.alphabets = "abcdefghijklmnopqrstuvwxyz";
     }
 
-    @Override
-    public int compareTo(Letter other) {
-        if (distance(this) < distance(other)) {
-            return 1;
-        } else if (distance(this) > distance(other)) {
-            return -1;
-        } else {
+    public float getFrequency() {
+        return this.frequency;
+    }
+
+    public char getChar() {
+        return this.c;
+    }
+
+    public void setUpQueue(float[] frequenciesInEnglish) {
+        int index = 0;
+        while (index < alphabets.length()) {
+            float smallestDifference = 100;
+            char charWithSmallestDifference = 0;
+            for (int i = 0; i < alphabets.length(); i++) {
+                if (Math.abs(this.frequency - frequenciesInEnglish[i]) 
+                        <= smallestDifference) {
+                    boolean alreadyAdded = false;
+                    for (char c : this.queue.toCharArray()) {
+                        if (c == alphabets.charAt(i)) {
+                            alreadyAdded = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyAdded) {
+                        charWithSmallestDifference = alphabets.charAt(i);
+                    }
+                }
+            }
+            this.queue += charWithSmallestDifference;
+            index++;
+        }
+    }
+
+    public char pollFirst() {
+        if (pointer == 26) {
             return 0;
         }
+        char first = queue.charAt(pointer);
+        pointer++;
+        return first;
+    }
+    
+    public char getFirst() {
+        if (pointer == 26) {
+            return 0;
+        }
+        char first = queue.charAt(pointer);
+        return first;
     }
 }
