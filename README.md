@@ -8,7 +8,7 @@ First, the program creates a datastructure called "trie" based on word list (txt
 
 To work correctly, this program expects that the cipher is breakable with frequency analysis (alphabets are just reordered) and there are spaces between words. There is also a list (txt-file) of frequencies of the language ([letter frequency in Wikipedia](https://en.wikipedia.org/wiki/Letter_frequency)). When a cipher is given, then frequencies of letters are been analyzed (later these results are been compared to the frequencies of the language).
 
-The program then tries to crack the given cipher with backtracking that is recursive method to try out the combinations. To be efficient, the frequencies are been used, so that the most possible combination is been tried out next.
+The program then tries to crack the given cipher with backtracking that is recursive method to try out the permutations. To be efficient, the frequencies are been used, so that the most possible permutation is been tried out next.
 
 ## Documentation
 [Design document](https://github.com/matiastamsi/tiralabra/blob/main/documentation/design_document.md)
