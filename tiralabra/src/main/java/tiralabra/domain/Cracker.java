@@ -205,7 +205,7 @@ public final class Cracker {
      * @return cracked pieces
      */
     private String[] crack(String[] p, String t, Letter[] l) {
-        
+
         // Check if all of the strings are real words. If so, then return.
         if (allCorrect(p)) {
             return p;
@@ -220,6 +220,16 @@ public final class Cracker {
         for (char c : this.pileC.toCharArray()) {
             // Find the Letter object that tells about the current letter (c).
             int indexOfChar = 0;
+            boolean changedOne = false;
+            for (char x : taken.toCharArray()) {
+                if (x == c) {
+                    changedOne = true;
+                    break;
+                }
+            }
+            if (changedOne) {
+                continue;
+            }
             for (int i = 0; i < this.alphabets.length; i++) {
                 if (this.alphabets[i] == c) {
                     indexOfChar = i;
@@ -235,19 +245,44 @@ public final class Cracker {
                     break;
                 }
             }
-            if (newChar != 0 && !alreadyTaken) {
+
+            boolean alreadyContains = false;
+            for (String s : pieces) {
+                for (char x : s.toCharArray()) {
+                    if (x == newChar) {
+                        alreadyContains = true;
+                        break;
+                    }
+                }
+            }
+            if (newChar != 0 && !alreadyTaken && !alreadyContains) {
+                // Take copies for later.
+                String[] copyPieces = pieces;
+                boolean nothingChanged = true;
+                for (int i = 0; i < pieces.length; i++) {
+                    String copy = pieces[i];
+                    pieces[i] = pieces[i].replace(c, newChar);
+                    if (!copy.equals(pieces[i])) {
+                        nothingChanged = false;
+                    }
+                }
+                if (nothingChanged) {
+                    continue;
+                }
+                String copyTaken = taken;
                 newChar = letter.pollFirst(); // Already peeked so now poll.
                 letters[indexOfChar] = letter; // Save the change.
                 taken += newChar;
-                for (int i = 0; i < pieces.length; i++) {
-                    pieces[i] = pieces[i].replace(c, newChar);
-                }
                 crack(pieces, taken, letters);
+                // If that call didn't give wanted outcome, put things back.
+                pieces = copyPieces;
+                taken = copyTaken;
             }
 
         }
 
-        return crack(pieces, "", letters);
+        return null;
+        
     }
 
     /**
