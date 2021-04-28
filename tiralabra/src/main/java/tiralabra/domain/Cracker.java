@@ -17,6 +17,8 @@ public final class Cracker {
     private final float[] frequenciesInCipher;
     private int differentOptionsToReplace;
     private int countOfLetters;
+    private String pileC;
+    private String pileE;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
@@ -34,6 +36,8 @@ public final class Cracker {
         this.frequenciesInCipher = new float[26];
         this.differentOptionsToReplace = 0;
         this.countOfLetters = 0;
+        this.pileC = "";
+        this.pileE = "";
     }
 
     /**
@@ -81,6 +85,66 @@ public final class Cracker {
             }
             this.frequenciesInCipher[i] = (float) count / this.countOfLetters;
         }
+
+        order();
+    }
+
+    /**
+     * A helper method that calls 26 times to find the letters with closest
+     * frequencies and add those to the piles.
+     */
+    private void order() {
+        int countOfHandledOnes = 0;
+        while (countOfHandledOnes < 26) {
+            this.pileE += next(this.frequenciesInEnglish, pileE);
+            this.pileC += next(this.frequenciesInCipher, pileC);
+            countOfHandledOnes++;
+        }
+        // Fill missing letters by assuming based on pileE.
+
+        for (int i = 0; i < pileE.length(); i++) {
+            char cE = pileE.charAt(i);
+            boolean found = false;
+            for (int j = 0; j < pileC.length(); j++) {
+                if (pileC.charAt(j) == cE) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                pileC += cE;
+            }
+        }
+
+    }
+
+    /**
+     * A helper method that checks which letter has the highest frequency and
+     * returns it if it is not already added to handled letters.
+     *
+     * @param freq array of frequencies
+     * @param handledLetters string of handled chars
+     * @return a char that has currently the highest frequency.
+     */
+    private char next(float[] freq, String handledLetters) {
+        float biggest = 0;
+        char c = 0;
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] > biggest) {
+                boolean handled = false;
+                for (int j = 0; j < handledLetters.length(); j++) {
+                    if (handledLetters.charAt(j) == this.alphabets[i]) {
+                        handled = true;
+                        break;
+                    }
+                }
+                if (!handled) {
+                    biggest = freq[i];
+                    c = this.alphabets[i];
+                }
+            }
+        }
+        return c;
     }
 
     /**
@@ -123,8 +187,7 @@ public final class Cracker {
      */
     public String cracked() {
         Letter[] letters = setUpLetters();
-        String[] cracked = crack(this.cipher.split(" "), "", "", letters, 0,
-                this.differentOptionsToReplace);
+        String[] cracked = crack(this.cipher.split(" "), "", letters);
         String answer = "";
         for (String s : cracked) {
             answer += s + " ";
@@ -132,64 +195,59 @@ public final class Cracker {
         return answer;
     }
 
-    private String[] crack(String[] p, String r, String t, Letter[] l, int index, int options) {
-        String replaced = r;
+    /**
+     * The recursive method to try out all possible permutations.
+     *
+     * @param p array of strings that represents pieces of the current sentence.
+     * @param t string that tells which letters are already taken.
+     * @param l array of letters (a-z) and each letter posses important
+     * information, especially a queue of best guesses (remaining).
+     * @return cracked pieces
+     */
+    private String[] crack(String[] p, String t, Letter[] l) {
+        
+        // Check if all of the strings are real words. If so, then return.
+        if (allCorrect(p)) {
+            return p;
+        }
+
         String taken = t;
         String[] pieces = p;
         Letter[] letters = l;
-        if (index < options) {
-            for (char c : this.cipher.toCharArray()) {
-                boolean alreadyReplaced = false;
-                for (char x : replaced.toCharArray()) {
-                    if (x == c) {
-                        alreadyReplaced = true;
-                        break;
-                    }
-                }
-                if (!alreadyReplaced && c != 32) {
-                    int indexOfChar = 0;
-                    for (int i = 0; i < this.alphabets.length; i++) {
-                        if (this.alphabets[i] == c) {
-                            indexOfChar = i;
-                        }
-                    }
-                    Letter letter = letters[indexOfChar];
-                    char newChar = letter.getFirst();
-                    boolean goNext = false;
-                    for (char x : taken.toCharArray()) {
-                        if (x == newChar) {
-                            goNext = true;
-                            break;
-                        }
-                    }
-                    if (newChar != 0 && !goNext) {
 
-                        Letter copyLetter = letter;
-                        String copyReplaced = replaced;
-                        String copyTaken = taken;
-                        String[] copyPieces = pieces;
-                        newChar = letter.pollFirst();
-                        letters[indexOfChar] = letter;
-                        taken += newChar;
-                        for (int i = 0; i < pieces.length; i++) {
-                            pieces[i] = pieces[i].replace(c, newChar);
-                        }
-                        replaced += c;
-                        crack(pieces, replaced, taken, letters, index + 1, options);
-                        replaced = copyReplaced;
-                        pieces = copyPieces;
-                        taken = copyTaken;
-                        letters[indexOfChar] = copyLetter;
-                        crack(pieces, replaced, taken, letters, index, options);
-                    }
+        // Start replacing letters in decreasing order 
+        // of the most common letter in the cipher.
+        for (char c : this.pileC.toCharArray()) {
+            // Find the Letter object that tells about the current letter (c).
+            int indexOfChar = 0;
+            for (int i = 0; i < this.alphabets.length; i++) {
+                if (this.alphabets[i] == c) {
+                    indexOfChar = i;
+                    break;
                 }
             }
-        } else {
-            if (allCorrect(p)) {
-                return p;
+            Letter letter = letters[indexOfChar];
+            char newChar = letter.peekFirst(); // Peek to check if not taken.
+            boolean alreadyTaken = false;
+            for (char x : taken.toCharArray()) {
+                if (x == newChar) {
+                    alreadyTaken = true;
+                    break;
+                }
             }
+            if (newChar != 0 && !alreadyTaken) {
+                newChar = letter.pollFirst(); // Already peeked so now poll.
+                letters[indexOfChar] = letter; // Save the change.
+                taken += newChar;
+                for (int i = 0; i < pieces.length; i++) {
+                    pieces[i] = pieces[i].replace(c, newChar);
+                }
+                crack(pieces, taken, letters);
+            }
+
         }
-        return crack(pieces, "", "", letters, 0, options);
+
+        return crack(pieces, "", letters);
     }
 
     /**

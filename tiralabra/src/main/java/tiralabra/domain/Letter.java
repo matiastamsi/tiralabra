@@ -13,11 +13,11 @@ package tiralabra.domain;
  */
 public class Letter {
 
-    private char c;
-    private float frequency;
+    private final char c;
+    private final float frequency;
     private String queue;
     private int pointer;
-    private String alphabets;
+    private final String alphabets;
 
     /**
      *
@@ -46,16 +46,18 @@ public class Letter {
             float smallestDifference = 100;
             char charWithSmallestDifference = 0;
             for (int i = 0; i < alphabets.length(); i++) {
-                if (Math.abs(this.frequency - frequenciesInEnglish[i]) 
-                        <= smallestDifference) {
+                if (Math.abs(this.frequency - frequenciesInEnglish[i])
+                        < smallestDifference) {
                     boolean alreadyAdded = false;
-                    for (char c : this.queue.toCharArray()) {
-                        if (c == alphabets.charAt(i)) {
+                    for (char q : this.queue.toCharArray()) {
+                        if (q == alphabets.charAt(i)) {
                             alreadyAdded = true;
                             break;
                         }
                     }
                     if (!alreadyAdded) {
+                        smallestDifference
+                                = Math.abs(this.frequency - frequenciesInEnglish[i]);
                         charWithSmallestDifference = alphabets.charAt(i);
                     }
                 }
@@ -73,8 +75,8 @@ public class Letter {
         pointer++;
         return first;
     }
-    
-    public char getFirst() {
+
+    public char peekFirst() {
         if (pointer == 26) {
             return 0;
         }
