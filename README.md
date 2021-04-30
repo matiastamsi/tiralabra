@@ -27,3 +27,5 @@ The program then tries to crack the given cipher with backtracking that is recur
 [Week 4 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_4_report.md)
 
 [Week 5 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_5_report.md)
+
+[Week 6 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_6_report.md)
