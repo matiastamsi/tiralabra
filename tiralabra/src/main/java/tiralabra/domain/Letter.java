@@ -70,23 +70,7 @@ public class Letter {
     }
 
     public char next(String taken) {
-        int i = 0;
-        while (i < this.queue.length()) {
-            char c = this.queue.charAt(i);
-            boolean alreadyTaken = false;
-            for (char t : taken.toCharArray()) {
-                if (t == c) {
-                    alreadyTaken = true;
-                    break;
-                }
-            }
-            if (!alreadyTaken) {
-                return c;
-            } else {
-                i++;
-            }
-        }
-        
+
         return 0;
     }
 }
