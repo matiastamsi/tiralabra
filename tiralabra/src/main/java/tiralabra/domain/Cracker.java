@@ -19,6 +19,7 @@ public final class Cracker {
     private int countOfLetters;
     private String pileC;
     private String pileE;
+    private String differentLettersCipher;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
@@ -100,6 +101,7 @@ public final class Cracker {
             this.pileC += next(this.frequenciesInCipher, pileC);
             countOfHandledOnes++;
         }
+        this.differentLettersCipher = pileC;
         // Fill missing letters by assuming based on pileE.
 
         for (int i = 0; i < pileE.length(); i++) {
@@ -187,31 +189,13 @@ public final class Cracker {
      */
     public String cracked() {
         Letter[] letters = setUpLetters();
-        String[] cracked = crack(this.cipher.split(" "), "", letters);
-        String answer = "";
-        for (String s : cracked) {
-            answer += s + " ";
-        }
-        return answer;
+        return crack(letters);
     }
 
-    /**
-     * The recursive method to try out all possible permutations.
-     *
-     * @param p array of strings that represents pieces of the current sentence.
-     * @param t string that tells which letters are already taken.
-     * @param l array of letters (a-z) and each letter posses important
-     * information, especially a queue of best guesses (remaining).
-     * @return cracked pieces
-     */
-    private String[] crack(String[] p, String t, Letter[] l) {
 
-        // Check if all of the strings are real words. If so, then return.
-        if (allCorrect(p)) {
-            return p;
-        }
+    private String crack(Letter[] l) {
 
-        // Not implemented yet.
+        // Not implemented
         
         return null;
         
@@ -223,9 +207,9 @@ public final class Cracker {
      * @param pieces sentence's pieces
      * @return boolean value
      */
-    private boolean allCorrect(String[] pieces) {
-        for (String p : pieces) {
-            System.out.println(p);
+    private boolean allCorrect(String pieces) {
+        System.out.println(pieces);
+        for (String p : pieces.split(" ")) {
             if (!trie.findWord(p)) {
                 return false;
             }
@@ -241,7 +225,7 @@ public final class Cracker {
     private Letter[] setUpLetters() {
         Letter[] letters = new Letter[26];
         for (int i = 0; i < 26; i++) {
-            Letter letter = new Letter(this.alphabets[i], this.frequenciesInCipher[i]);
+            Letter letter = new Letter(this.alphabets[i], this.frequenciesInCipher[i], i);
             letter.setUpQueue(this.frequenciesInEnglish);
             letters[i] = letter;
         }

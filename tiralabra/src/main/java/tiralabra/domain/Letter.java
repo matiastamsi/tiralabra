@@ -18,18 +18,20 @@ public class Letter {
     private String queue;
     private int pointer;
     private final String alphabets;
+    private int indexInAlphabets;
 
     /**
      *
      * @param c char from cipher
      * @param f frequency of the char
      */
-    public Letter(char c, float f) {
+    public Letter(char c, float f, int i) {
         this.c = c;
         this.frequency = f;
         this.queue = "";
         this.pointer = 0;
         this.alphabets = "abcdefghijklmnopqrstuvwxyz";
+        this.indexInAlphabets = i;
     }
 
     public float getFrequency() {
@@ -67,24 +69,24 @@ public class Letter {
         }
     }
 
-    public char pollFirst() {
-        if (pointer == 26) {
-            return 0;
+    public char next(String taken) {
+        int i = 0;
+        while (i < this.queue.length()) {
+            char c = this.queue.charAt(i);
+            boolean alreadyTaken = false;
+            for (char t : taken.toCharArray()) {
+                if (t == c) {
+                    alreadyTaken = true;
+                    break;
+                }
+            }
+            if (!alreadyTaken) {
+                return c;
+            } else {
+                i++;
+            }
         }
-        char first = queue.charAt(pointer);
-        pointer++;
-        return first;
-    }
-
-    public char peekFirst() {
-        if (pointer == 26) {
-            return 0;
-        }
-        char first = queue.charAt(pointer);
-        return first;
-    }
-    
-    public void setPointerToStart() {
-        this.pointer = 0;
+        
+        return 0;
     }
 }

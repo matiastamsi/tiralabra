@@ -13,7 +13,7 @@ public class LetterTest {
     
     @Test
     public void creatingLetterWorks() {
-        Letter l = new Letter((char) 97, (float) 0.01);
+        Letter l = new Letter((char) 97, (float) 0.01, 0);
         assertEquals(97, l.getChar());
         assertEquals(0.01, l.getFrequency(), 0.001);
     }
