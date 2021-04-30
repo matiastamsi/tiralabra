@@ -211,76 +211,8 @@ public final class Cracker {
             return p;
         }
 
-        String taken = t;
-        String[] pieces = p;
-        Letter[] letters = l;
-
-        // Start replacing letters in decreasing order 
-        // of the most common letter in the cipher.
-        for (char c : this.pileC.toCharArray()) {
-            // Find the Letter object that tells about the current letter (c).
-            int indexOfChar = 0;
-            boolean changedOne = false;
-            for (char x : taken.toCharArray()) {
-                if (x == c) {
-                    changedOne = true;
-                    break;
-                }
-            }
-            if (changedOne) {
-                continue;
-            }
-            for (int i = 0; i < this.alphabets.length; i++) {
-                if (this.alphabets[i] == c) {
-                    indexOfChar = i;
-                    break;
-                }
-            }
-            Letter letter = letters[indexOfChar];
-            char newChar = letter.peekFirst(); // Peek to check if not taken.
-            boolean alreadyTaken = false;
-            for (char x : taken.toCharArray()) {
-                if (x == newChar) {
-                    alreadyTaken = true;
-                    break;
-                }
-            }
-
-            boolean alreadyContains = false;
-            for (String s : pieces) {
-                for (char x : s.toCharArray()) {
-                    if (x == newChar) {
-                        alreadyContains = true;
-                        break;
-                    }
-                }
-            }
-            if (newChar != 0 && !alreadyTaken && !alreadyContains) {
-                // Take copies for later.
-                String[] copyPieces = pieces;
-                boolean nothingChanged = true;
-                for (int i = 0; i < pieces.length; i++) {
-                    String copy = pieces[i];
-                    pieces[i] = pieces[i].replace(c, newChar);
-                    if (!copy.equals(pieces[i])) {
-                        nothingChanged = false;
-                    }
-                }
-                if (nothingChanged) {
-                    continue;
-                }
-                String copyTaken = taken;
-                newChar = letter.pollFirst(); // Already peeked so now poll.
-                letters[indexOfChar] = letter; // Save the change.
-                taken += newChar;
-                crack(pieces, taken, letters);
-                // If that call didn't give wanted outcome, put things back.
-                pieces = copyPieces;
-                taken = copyTaken;
-            }
-
-        }
-
+        // Not implemented yet.
+        
         return null;
         
     }

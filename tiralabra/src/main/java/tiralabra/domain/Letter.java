@@ -83,4 +83,8 @@ public class Letter {
         char first = queue.charAt(pointer);
         return first;
     }
+    
+    public void setPointerToStart() {
+        this.pointer = 0;
+    }
 }
