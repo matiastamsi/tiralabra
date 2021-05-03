@@ -16,12 +16,11 @@ public final class Cracker {
     private final float[] frequenciesInEnglish;
     private final float[] frequenciesInCipher;
     private int countOfLetters;
+    private int countOfDifferentLettersInCipher;
     private String pileC;
     private String pileE;
     private Letter[] differentLettersInCipher;
-    private int countOfDifferentLettersInCipher;
     private Letter[] cipherAsLetterArray;
-    private String cracked;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
@@ -38,9 +37,9 @@ public final class Cracker {
         this.frequenciesInEnglish = loadFrequenciesInEnglish("frequencies.txt");
         this.frequenciesInCipher = new float[26];
         this.countOfLetters = 0;
+        this.countOfDifferentLettersInCipher = 0;
         this.pileC = "";
         this.pileE = "";
-        this.cracked = "No solution found.";
     }
 
     /**
@@ -101,7 +100,7 @@ public final class Cracker {
             this.pileC += next(this.frequenciesInCipher, pileC);
             countOfHandledOnes++;
         }
-        this.countOfDifferentLettersInCipher = pileC.length();
+
         // Fill missing letters by assuming based on pileE.
         for (int i = 0; i < pileE.length(); i++) {
             char cE = pileE.charAt(i);
@@ -167,7 +166,7 @@ public final class Cracker {
 
     private void createLetterArrays() {
         this.cipherAsLetterArray = new Letter[this.cipher.length()];
-        this.differentLettersInCipher = new Letter[this.countOfDifferentLettersInCipher];
+        this.differentLettersInCipher = new Letter[26];
         String handled = "";
         int indexCountingDiffLetters = 0;
         for (int i = 0; i < this.cipher.length(); i++) {
@@ -198,6 +197,7 @@ public final class Cracker {
             }
             this.cipherAsLetterArray[i] = letter;
         }
+        this.countOfDifferentLettersInCipher = indexCountingDiffLetters;
     }
 
     /**
@@ -226,26 +226,24 @@ public final class Cracker {
         return crack(letters, 0);
     }
 
-    private String crack(Letter[] l, int index) {
-
+    private String crack(Letter[] l, int i) {
         String replaced = replaceLettersInCipher(l);
-
         if (allCorrect(replaced)) {
             return replaced;
         }
-
-        for (int i = index; i < this.differentLettersInCipher.length; i++) {
-            int indexInAlphabets = this.differentLettersInCipher[i].getIndexInAlphabets();
-            Letter[] copy = l;
-            Letter letterToPop = copy[indexInAlphabets];
-            for (int j = 0; j < 26; j++) {
-                letterToPop.popFirst();
-                copy[indexInAlphabets] = letterToPop;
-                return crack(copy, index + 1);
-            }
+        int index = i;
+        if (index == this.countOfDifferentLettersInCipher) {
+            index = 0;
         }
-        
-        return null;
+        Letter letterInCipher = this.differentLettersInCipher[index];
+        int indexInAlphabets = letterInCipher.getIndexInAlphabets();
+        Letter[] copy = l;
+        Letter letterToPop = copy[indexInAlphabets];
+        int pointer = letterToPop.popFirst();
+        copy[indexInAlphabets] = letterToPop;
+
+        return crack(copy, index + 1);
+
     }
 
     /**
