@@ -24,6 +24,7 @@ public class Letter {
      *
      * @param c char from cipher
      * @param f frequency of the char
+     * @param i index in alphabets
      */
     public Letter(char c, float f, int i) {
         this.c = c;
@@ -40,6 +41,14 @@ public class Letter {
 
     public char getChar() {
         return this.c;
+    }
+    
+    public String getQueue() {
+        return this.queue;
+    }
+    
+    public int getIndexInAlphabets() {
+        return this.indexInAlphabets;
     }
 
     public void setUpQueue(float[] frequenciesInEnglish) {
@@ -69,8 +78,12 @@ public class Letter {
         }
     }
 
-    public char next(String taken) {
-
-        return 0;
+    public char next() {
+        return this.queue.charAt(this.pointer);
+    }
+    
+    public int popFirst() {
+        this.pointer++;
+        return this.pointer;
     }
 }
