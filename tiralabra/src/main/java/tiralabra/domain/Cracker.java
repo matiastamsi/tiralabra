@@ -100,6 +100,9 @@ public final class Cracker {
             this.pileC += next(this.frequenciesInCipher, pileC);
             countOfHandledOnes++;
         }
+        
+        System.out.println(pileE);
+        System.out.println(pileC);
 
         // Fill missing letters by assuming based on pileE.
         for (int i = 0; i < pileE.length(); i++) {
@@ -115,6 +118,7 @@ public final class Cracker {
                 pileC += cE;
             }
         }
+        System.out.println(pileC);
 
     }
 
@@ -194,6 +198,7 @@ public final class Cracker {
             if (!alreadyHandled) {
                 this.differentLettersInCipher[indexCountingDiffLetters] = letter;
                 indexCountingDiffLetters++;
+                handled += letter.getChar();
             }
             this.cipherAsLetterArray[i] = letter;
         }
@@ -227,22 +232,9 @@ public final class Cracker {
     }
 
     private String crack(Letter[] l, int i) {
-        String replaced = replaceLettersInCipher(l);
-        if (allCorrect(replaced)) {
-            return replaced;
-        }
-        int index = i;
-        if (index == this.countOfDifferentLettersInCipher) {
-            index = 0;
-        }
-        Letter letterInCipher = this.differentLettersInCipher[index];
-        int indexInAlphabets = letterInCipher.getIndexInAlphabets();
-        Letter[] copy = l;
-        Letter letterToPop = copy[indexInAlphabets];
-        int pointer = letterToPop.popFirst();
-        copy[indexInAlphabets] = letterToPop;
+        
 
-        return crack(copy, index + 1);
+        return null;
 
     }
 
@@ -273,6 +265,7 @@ public final class Cracker {
             Letter letter = new Letter(this.alphabets[i], this.frequenciesInCipher[i], i);
             letter.setUpQueue(this.frequenciesInEnglish);
             letters[i] = letter;
+            System.out.println(letter.getQueue());
         }
         return letters;
     }

@@ -58,7 +58,7 @@ public class Letter {
             char charWithSmallestDifference = 0;
             for (int i = 0; i < alphabets.length(); i++) {
                 if (Math.abs(this.frequency - frequenciesInEnglish[i])
-                        < smallestDifference) {
+                        <= smallestDifference) {
                     boolean alreadyAdded = false;
                     for (char q : this.queue.toCharArray()) {
                         if (q == alphabets.charAt(i)) {
