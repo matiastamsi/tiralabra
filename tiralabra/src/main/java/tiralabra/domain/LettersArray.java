@@ -59,7 +59,7 @@ public class LettersArray {
      * the same branches.
      *
      * @param p permutation
-     * @return boolean value
+     * @return Boolean value
      */
     public boolean permutationExists(String p) {
         for (Letters letters : this.array) {
