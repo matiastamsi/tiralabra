@@ -12,12 +12,18 @@ package tiralabra.domain;
 public class Letters {
 
     private Letter[] letters;
+    private String permutation;
 
-    public Letters(Letter[] l) {
+    public Letters(Letter[] l, String p) {
         this.letters = l;
+        this.permutation = p;
     }
 
     public Letter[] getLetters() {
         return this.letters;
+    }
+    
+    public String getPermutation() {
+        return this.permutation;
     }
 }

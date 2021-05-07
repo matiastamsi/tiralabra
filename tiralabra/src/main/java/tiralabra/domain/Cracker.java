@@ -219,7 +219,12 @@ public final class Cracker {
      * @return solved pieces as a string
      */
     public String cracked() {
-        Letters letters = new Letters(setUpLetters());
+        Letter[] letterArray = setUpLetters();
+        String replaced = replaceLettersInCipher(letterArray);
+        if (allCorrect(replaced)) {
+            return replaced;
+        }
+        Letters letters = new Letters(letterArray, replaced);
         LettersArray lettersArray = new LettersArray(1);
         lettersArray.addLetters(letters);
         return crack(lettersArray);
@@ -232,8 +237,7 @@ public final class Cracker {
             newLength = this.countOfDifferentLettersInCipher;
         }
 
-        LettersArray biggerLettersArrayForPermutations
-                = new LettersArray(newLength);
+        LettersArray largerLettersArray = new LettersArray(newLength);
 
         for (Letters letters : lettersArray.getLettersAsArray()) {
             Letter[] letterArray = letters.getLetters();
@@ -246,7 +250,8 @@ public final class Cracker {
                 if (allCorrect(replaced)) {
                     return replaced;
                 }
-                if (letter.getPointer() < 26) {
+                if (letter.getPointer() < 26 &&
+                        !largerLettersArray.permutationExists(replaced)) {
                     Letter[] copy = new Letter[letterArray.length];
                     for (int j = 0; j < letterArray.length; j++) {
                         Letter copyOfLetter = new Letter(letterArray[j].getChar(),
@@ -256,15 +261,15 @@ public final class Cracker {
                                 letterArray[j].getPointer());
                         copy[j] = copyOfLetter;
                     }
-                    biggerLettersArrayForPermutations.addLetters(new Letters(copy));
+                    largerLettersArray.addLetters(new Letters(copy, replaced));
                 }
                 letter.decreasePointer();
             }
         }
 
-        biggerLettersArrayForPermutations.compress();
+        largerLettersArray.compress();
 
-        return crack(biggerLettersArrayForPermutations);
+        return crack(largerLettersArray);
 
     }
 
