@@ -55,7 +55,7 @@ public class LetterTest {
         l.setUpQueue(array);
         assertEquals("zqxjkvbpygfwmucldrhsnioate", l.getQueue());
         assertEquals("z".toCharArray()[0], l.next());
-        l.popFirst();
+        l.increasePointer();
         assertEquals("q".toCharArray()[0], l.next());
     }
 

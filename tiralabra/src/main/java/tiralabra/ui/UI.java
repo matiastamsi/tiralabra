@@ -50,7 +50,7 @@ public class UI {
      * Actions when user chooses to crack a cipher.
      */
     private void crack() {
-        io.print("Let's do some cracking!\n"
+        io.print("\nLet's do some cracking!\n"
                 + "If you want to generate a cipher by first giving the \n"
                 + "manipulated alphabets, then press 'g'.\n"
                 + "If you want to give the cipher straight,\n"
@@ -70,8 +70,10 @@ public class UI {
             cipher = io.nextLine();
         }
         cracker.giveCipher(cipher);
+        cracker.order();
+        cracker.createLetterArrays();
         io.print("Do you want to see the frequencies"
-                + " of each letter? (y/n):");
+                + " of each letter? (y/n):\n");
         answer = io.nextLine();
         if (answer.equals("y")) {
             io.print(cracker.listFrequencies());

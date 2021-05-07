@@ -18,7 +18,7 @@ public class Letter {
     private String queue;
     private int pointer;
     private final String alphabets;
-    private int indexInAlphabets;
+    private final int indexInAlphabets;
 
     /**
      *
@@ -34,6 +34,11 @@ public class Letter {
         this.alphabets = "abcdefghijklmnopqrstuvwxyz";
         this.indexInAlphabets = i;
     }
+    
+    public void setQueue(String s, int pointer) {
+        this.queue = s;
+        this.pointer = pointer;
+    }
 
     public float getFrequency() {
         return this.frequency;
@@ -41,6 +46,10 @@ public class Letter {
 
     public char getChar() {
         return this.c;
+    }
+    
+    public int getPointer() {
+        return this.pointer;
     }
     
     public String getQueue() {
@@ -82,8 +91,11 @@ public class Letter {
         return this.queue.charAt(this.pointer);
     }
     
-    public int popFirst() {
+    public void increasePointer() {
         this.pointer++;
-        return this.pointer;
+    }
+    
+    public void decreasePointer() {
+        this.pointer--;
     }
 }
