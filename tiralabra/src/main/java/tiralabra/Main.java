@@ -19,7 +19,8 @@ public class Main {
      */
     public static void main(String[] args) {
         Trie trie = new Trie();
-        // Source of the words http://www.mieliestronk.com/corncob_lowercase.txt
+        // Source of the words but I have added some to the file
+        // http://www.mieliestronk.com/corncob_lowercase.txt
         trie.createTrie("english_words_lowercase.txt");
         Cracker cracker = new Cracker(trie);
         UI ui = new UI(new ConsoleIO(), cracker);

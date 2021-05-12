@@ -59,7 +59,7 @@ public class CrackerTest {
                 + "x / 0.0015 / 0.0\n"
                 + "y / 0.02 / 0.0\n"
                 + "z / 7.4E-4 / 0.0\n"
-                + "", c.listFrequencies());
+                + "", c.listData());
     }
 
 }

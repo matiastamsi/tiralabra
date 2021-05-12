@@ -57,6 +57,16 @@ public class LetterTest {
         assertEquals("z".toCharArray()[0], l.next());
         l.increasePointer();
         assertEquals("q".toCharArray()[0], l.next());
+        l.decreasePointer();
+        assertEquals("z".toCharArray()[0], l.next());
+    }
+    
+    @Test
+    public void settingQueueAndPointerWorks() {
+        l = new Letter((char) 97, (float) 0.5, 0);
+        l.setQueue("works", 3);
+        assertEquals(l.getQueue(), "works");
+        assertEquals(l.getPointer(), 3);
     }
 
 }

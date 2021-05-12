@@ -1,5 +1,7 @@
 package tiralabra.ui;
 
+import java.nio.file.Paths;
+import java.util.Scanner;
 import tiralabra.domain.Cracker;
 
 /**
@@ -30,7 +32,7 @@ public class UI {
         boolean keepGoing = true;
         while (keepGoing) {
             io.print("Give a command from the following:"
-                    + "\nexit\ncrack");
+                    + "\nexit\ncrack\n");
             String command = io.nextLine();
             switch (command) {
                 case "exit":
@@ -54,30 +56,29 @@ public class UI {
                 + "If you want to generate a cipher by first giving the \n"
                 + "manipulated alphabets, then press 'g'.\n"
                 + "If you want to give the cipher straight,\n"
-                + "then press enter!\n");
+                + "then press anything!\n");
         String answer = io.nextLine();
         String cipher;
         if (answer.equals("g")) {
             io.print("Give alphabets:\nabcdefghijklmnopqrstuvwxyz\n");
             String manipulatedAlphabets = io.nextLine();
             io.print("Give something to be changed:\n");
-            String normalText = io.nextLine();
+            String normal = io.nextLine();
+            String normalLC = normal.toLowerCase();
             cipher = generate("abcdefghijklmnopqrstuvwxyz",
-                    manipulatedAlphabets, normalText);
+                    manipulatedAlphabets, normalLC);
             io.print("The cipher is:\n" + cipher + "\n");
         } else {
             io.print("Give a cipher:\n");
-            cipher = io.nextLine();
+            String given = io.nextLine();
+            cipher = given.toLowerCase();
         }
+        cipher = dropEverythingElseThanAlphabetsAndSpaces(cipher);
         cracker.giveCipher(cipher);
         cracker.order();
         cracker.createLetterArrays();
-        io.print("Do you want to see the frequencies"
-                + " of each letter? (y/n):\n");
-        answer = io.nextLine();
-        if (answer.equals("y")) {
-            io.print(cracker.listFrequencies());
-        }
+        cracker.setUpLetters();
+        io.print(cracker.listData());
         io.print(cracker.cracked() + "\n");
     }
 
@@ -106,5 +107,14 @@ public class UI {
         }
         return str;
     }
-
+    
+    public String dropEverythingElseThanAlphabetsAndSpaces(String cipher) {
+        String s = "";
+        for (char c : cipher.toCharArray()) {
+            if ((c >= 97 && c <= 122) || c == 32) {
+                s += c;
+            }
+        }
+        return s;
+    }
 }
