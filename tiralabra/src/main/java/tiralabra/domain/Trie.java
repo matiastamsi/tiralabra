@@ -87,7 +87,7 @@ public class Trie {
      * Tell if word is in a trie.
      *
      * @param word a string that is been questioned
-     * @return a boolean value wether the word is in a trie.
+     * @return Boolean value wether the word is in a trie.
      */
     public boolean findWord(String word) {
         char f = word.charAt(0);

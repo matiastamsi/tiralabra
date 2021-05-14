@@ -12,7 +12,7 @@ public final class Cracker {
 
     private final Trie trie;
     private final char[] alphabets;
-    public String cipher;
+    private String cipher;
     private final float[] frequenciesInEnglish;
     private final float[] frequenciesInCipher;
     private int countOfLetters;
@@ -96,7 +96,6 @@ public final class Cracker {
             this.pileC += next(this.frequenciesInCipher, pileC);
             countOfHandledOnes++;
         }
-        System.out.println(pileE + " \n" + pileC + "\n");
         // Fill the missing letters by assuming based on pileE.
         for (int i = 0; i < pileE.length(); i++) {
             char cE = pileE.charAt(i);
@@ -159,6 +158,12 @@ public final class Cracker {
         return count;
     }
 
+    /**
+     * A method which creates array of letters based on the cipher. It forms one
+     * for the cipher and one for different letters in cipher. This speeds up
+     * actions while cracking because Letter object knows its index in the
+     * alphabets.
+     */
     public void createLetterArrays() {
         this.cipherAsLetterArray = new Letter[this.cipher.length()];
         this.differentLettersInCipher = new Letter[26];
@@ -201,13 +206,15 @@ public final class Cracker {
      * @return the answer as a string.
      */
     public String listData() {
-        String answer = "### FREQUENCIES ### \n [letter] / [f. in English] / [f. in the cipher]"
+        String answer = "### FREQUENCIES ### \n"
+                + " [letter] / [f. in English] / [f. in the cipher]"
                 + "\n";
         for (int i = 0; i < this.alphabets.length; i++) {
             answer += this.alphabets[i] + " / " + this.frequenciesInEnglish[i]
                     + " / " + this.frequenciesInCipher[i] + "\n";
         }
-        answer += "\n### ORDER TO REPLACE LETTER WITH ANOTHER ### \n [letter] / [letter's queue (the best guesses)]\n";
+        answer += "\n### ORDER TO REPLACE LETTER WITH ANOTHER ### \n"
+                + " [letter] / [letter's queue (the best guesses)]\n";
         for (Letter l : this.letterArray) {
             answer += l.getChar() + " / " + l.getQueue() + "\n";
         }
@@ -234,13 +241,13 @@ public final class Cracker {
     }
 
     /**
-     * The recursive method that goes through a array where is previous
+     * The recursive method that goes through an array where is the previous
      * permutations. Then it creates new permutations based on previous ones. If
      * a permutation produces a correct English sentence (all the strings are
      * found from the trie) then it returns it as a solution. All different
      * permutations are added for next round. So, same permutations are rejected
-     * and also those that has a letter that has become out of new options to be
-     * replaced.
+     * and also those that has a letter that has gone out of new options to
+     * replace.
      *
      * @param lettersArray array of Letters objects
      * @return solved cipher as a string
@@ -259,19 +266,19 @@ public final class Cracker {
             for (int i = 0; i < this.countOfDifferentLettersInCipher; i++) {
                 Letter letterAtIndex = this.differentLettersInCipher[i];
                 int indexInLetters = letterAtIndex.getIndexInAlphabets();
-                Letter letter = letterArray[indexInLetters];
-                letter.increasePointer(); // Pop the first from the queue.
+                Letter l = letterArray[indexInLetters];
+                l.increasePointer(); // Pop the first from the queue.
                 String replaced = replaceLettersInCipher(letterArray);
                 if (allCorrect(replaced)) {
                     return replaced;
                 }
-                if (letter.getPointer() < 26) {
+                if (l.getPointer() < 26) {
                     if (!largerLettersArray.permutationExists(replaced)) {
-                        Letter[] copy = createCopy(letterArray);
-                        largerLettersArray.addLetters(new Letters(copy, replaced));
+                        Letter[] c = createCopy(letterArray);
+                        largerLettersArray.addLetters(new Letters(c, replaced));
                     }
                 }
-                letter.decreasePointer(); // Put back for the next iteration.
+                l.decreasePointer(); // Put back for the next iteration.
             }
         }
         largerLettersArray.compress(); // Get rid of the empty space.
@@ -347,5 +354,4 @@ public final class Cracker {
             this.letterArray[i] = letter;
         }
     }
-
 }

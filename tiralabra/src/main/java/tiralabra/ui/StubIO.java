@@ -45,7 +45,7 @@ public class StubIO implements IO {
     @Override
     public void print(final String output) {
         String[] newArray = new String[this.outputs.length + 1];
-        for (int i = 0; i < newArray.length - 2; i++) {
+        for (int i = 0; i < newArray.length - 1; i++) {
             newArray[i] = this.outputs[i];
         }
         newArray[newArray.length - 1] = output;
@@ -55,7 +55,7 @@ public class StubIO implements IO {
     /**
      * Tell whether there is still next line coming.
      *
-     * @return boolean value
+     * @return Boolean value
      */
     @Override
     public boolean hasNextLine() {
@@ -67,6 +67,7 @@ public class StubIO implements IO {
      *
      * @return array of outputs as strings
      */
+    @Override
     public String[] getOutputs() {
         return this.outputs;
     }

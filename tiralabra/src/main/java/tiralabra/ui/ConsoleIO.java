@@ -38,8 +38,18 @@ public class ConsoleIO implements IO {
         System.out.println(output);
     }
 
+    /**
+     * Check if scanner has a line coming.
+     *
+     * @return Boolean value
+     */
     @Override
     public boolean hasNextLine() {
         return this.scanner.hasNextLine();
+    }
+    
+    @Override
+    public String[] getOutputs() {
+        return null;
     }
 }

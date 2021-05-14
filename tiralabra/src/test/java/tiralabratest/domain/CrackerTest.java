@@ -21,44 +21,76 @@ public class CrackerTest {
     @Test
     public void loadingEnglishFrequenciesFromFileWorks() {
         float[] f = c.loadFrequenciesInEnglish("frequencies.txt");
-        assertEquals(0.082, f[0], 0.0001);
-        assertEquals(0.0077, f[10], 0.00001);
-        assertEquals(0.06, f[17], 0.001);
+        assertEquals(0.08167, f[0], 0.000001);
+        assertEquals(0.00772, f[10], 0.000001);
+        assertEquals(0.05987, f[17], 0.000001);
         assertEquals(0.00074, f[25], 0.000001);
     }
 
     @Test
     public void givingCipherInitializesEverythingThatNeeded() {
         c.giveCipher("aaaaa bbbcc");
-        assertEquals("aaaaa bbbcc", c.cipher);
+        c.order();
+        c.createLetterArrays();
+        c.setUpLetters();
         assertEquals(""
-                + "[letter] / [freq. in English] / [freq. in the cipher]\n"
-                + "a / 0.082 / 0.5\n"
-                + "b / 0.015 / 0.3\n"
-                + "c / 0.028 / 0.2\n"
-                + "d / 0.043 / 0.0\n"
-                + "e / 0.13 / 0.0\n"
-                + "f / 0.022 / 0.0\n"
-                + "g / 0.02 / 0.0\n"
-                + "h / 0.061 / 0.0\n"
-                + "i / 0.07 / 0.0\n"
-                + "j / 0.0015 / 0.0\n"
-                + "k / 0.0077 / 0.0\n"
-                + "l / 0.04 / 0.0\n"
-                + "m / 0.024 / 0.0\n"
-                + "n / 0.067 / 0.0\n"
-                + "o / 0.075 / 0.0\n"
-                + "p / 0.019 / 0.0\n"
+                + "### FREQUENCIES ### \n"
+                + " [letter] / [f. in English] / [f. in the cipher]\n"
+                + "a / 0.08167 / 0.5\n"
+                + "b / 0.01492 / 0.3\n"
+                + "c / 0.02782 / 0.2\n"
+                + "d / 0.04253 / 0.0\n"
+                + "e / 0.12702 / 0.0\n"
+                + "f / 0.02228 / 0.0\n"
+                + "g / 0.02015 / 0.0\n"
+                + "h / 0.06094 / 0.0\n"
+                + "i / 0.06966 / 0.0\n"
+                + "j / 0.00153 / 0.0\n"
+                + "k / 0.00772 / 0.0\n"
+                + "l / 0.04025 / 0.0\n"
+                + "m / 0.02406 / 0.0\n"
+                + "n / 0.06749 / 0.0\n"
+                + "o / 0.07507 / 0.0\n"
+                + "p / 0.01929 / 0.0\n"
                 + "q / 9.5E-4 / 0.0\n"
-                + "r / 0.06 / 0.0\n"
-                + "s / 0.063 / 0.0\n"
-                + "t / 0.091 / 0.0\n"
-                + "u / 0.028 / 0.0\n"
-                + "v / 0.0098 / 0.0\n"
-                + "w / 0.024 / 0.0\n"
+                + "r / 0.05987 / 0.0\n"
+                + "s / 0.06327 / 0.0\n"
+                + "t / 0.09056 / 0.0\n"
+                + "u / 0.02758 / 0.0\n"
+                + "v / 0.00978 / 0.0\n"
+                + "w / 0.0236 / 0.0\n"
                 + "x / 0.0015 / 0.0\n"
-                + "y / 0.02 / 0.0\n"
+                + "y / 0.01974 / 0.0\n"
                 + "z / 7.4E-4 / 0.0\n"
+                + "\n"
+                + "### ORDER TO REPLACE LETTER WITH ANOTHER ### \n"
+                + " [letter] / [letter's queue (the best guesses)]\n"
+                + "a / etaoinshrdlcumwfgypbvkjxqz\n"
+                + "b / etaoinshrdlcumwfgypbvkjxqz\n"
+                + "c / etaoinshrdlcumwfgypbvkjxqz\n"
+                + "d / zqxjkvbpygfwmucldrhsnioate\n"
+                + "e / zqxjkvbpygfwmucldrhsnioate\n"
+                + "f / zqxjkvbpygfwmucldrhsnioate\n"
+                + "g / zqxjkvbpygfwmucldrhsnioate\n"
+                + "h / zqxjkvbpygfwmucldrhsnioate\n"
+                + "i / zqxjkvbpygfwmucldrhsnioate\n"
+                + "j / zqxjkvbpygfwmucldrhsnioate\n"
+                + "k / zqxjkvbpygfwmucldrhsnioate\n"
+                + "l / zqxjkvbpygfwmucldrhsnioate\n"
+                + "m / zqxjkvbpygfwmucldrhsnioate\n"
+                + "n / zqxjkvbpygfwmucldrhsnioate\n"
+                + "o / zqxjkvbpygfwmucldrhsnioate\n"
+                + "p / zqxjkvbpygfwmucldrhsnioate\n"
+                + "q / zqxjkvbpygfwmucldrhsnioate\n"
+                + "r / zqxjkvbpygfwmucldrhsnioate\n"
+                + "s / zqxjkvbpygfwmucldrhsnioate\n"
+                + "t / zqxjkvbpygfwmucldrhsnioate\n"
+                + "u / zqxjkvbpygfwmucldrhsnioate\n"
+                + "v / zqxjkvbpygfwmucldrhsnioate\n"
+                + "w / zqxjkvbpygfwmucldrhsnioate\n"
+                + "x / zqxjkvbpygfwmucldrhsnioate\n"
+                + "y / zqxjkvbpygfwmucldrhsnioate\n"
+                + "z / zqxjkvbpygfwmucldrhsnioate\n"
                 + "", c.listData());
     }
 

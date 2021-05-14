@@ -50,7 +50,7 @@ public class LetterTest {
         }
         l = new Letter((char) 100, (float) 0.3, 3);
         l.setUpQueue(array);
-        assertEquals("etaoinshrdlucwmfygpbvkxjqz", l.getQueue());
+        assertEquals("etaoinshrdlcumwfgypbvkjxqz", l.getQueue());
         l = new Letter((char) 100, (float) 0.00, 3);
         l.setUpQueue(array);
         assertEquals("zqxjkvbpygfwmucldrhsnioate", l.getQueue());

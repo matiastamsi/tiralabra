@@ -1,7 +1,5 @@
 package tiralabra.ui;
 
-import java.nio.file.Paths;
-import java.util.Scanner;
 import tiralabra.domain.Cracker;
 
 /**
@@ -11,7 +9,7 @@ import tiralabra.domain.Cracker;
  */
 public class UI {
 
-    private final IO io;
+    public final IO io;
     private final Cracker cracker;
 
     /**
@@ -91,7 +89,7 @@ public class UI {
      * @param orginal text
      * @return text where old chars are replaced with the pairs
      */
-    private String generate(String o, String n, String orginal) {
+    public String generate(String o, String n, String orginal) {
         String str = "";
         for (int i = 0; i < orginal.length(); i++) {
             char c = orginal.charAt(i);
@@ -108,9 +106,16 @@ public class UI {
         return str;
     }
     
+    /**
+     * Takes user's input cipher and leaves out everything else than just
+     * alphabets a-z and spaces.
+     * 
+     * @param cipher
+     * @return 
+     */
     public String dropEverythingElseThanAlphabetsAndSpaces(String cipher) {
         String s = "";
-        for (char c : cipher.toCharArray()) {
+        for (char c : cipher.toLowerCase().toCharArray()) {
             if ((c >= 97 && c <= 122) || c == 32) {
                 s += c;
             }

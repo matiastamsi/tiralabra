@@ -22,4 +22,10 @@ public interface IO {
      * @return true or false
      */
     boolean hasNextLine();
+    /**
+     * Getter method for outputs.
+     * 
+     * @return array of strings
+     */
+    String[] getOutputs();
 }
