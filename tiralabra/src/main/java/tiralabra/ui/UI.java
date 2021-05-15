@@ -58,9 +58,9 @@ public class UI {
         String answer = io.nextLine();
         String cipher;
         if (answer.equals("g")) {
-            io.print("Give alphabets:\nabcdefghijklmnopqrstuvwxyz\n");
+            io.print("\nGive alphabets:\nabcdefghijklmnopqrstuvwxyz\n");
             String manipulatedAlphabets = io.nextLine();
-            io.print("Give something to be changed:\n");
+            io.print("\nGive something to be changed:\n");
             String normal = io.nextLine();
             String normalLC = normal.toLowerCase();
             cipher = generate("abcdefghijklmnopqrstuvwxyz",

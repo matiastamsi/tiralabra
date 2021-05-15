@@ -138,8 +138,8 @@ public class UITest {
                 + "y / zqxjkvbpygfwmucldrhsnioate\n"
                 + "z / zqxjkvbpygfwmucldrhsnioate\n", ui.io.getOutputs()[10]);
         assertEquals("The cipher is:\nb\n", ui.io.getOutputs()[9]);
-        assertEquals("Give something to be changed:\n", ui.io.getOutputs()[8]);
-        assertEquals("Give alphabets:\n"
+        assertEquals("\nGive something to be changed:\n", ui.io.getOutputs()[8]);
+        assertEquals("\nGive alphabets:\n"
                 + "abcdefghijklmnopqrstuvwxyz\n", ui.io.getOutputs()[7]);
         assertEquals("\nLet's do some cracking!\n"
                 + "If you want to generate a cipher by first giving the \n"
