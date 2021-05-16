@@ -30,6 +30,8 @@ __Remember that if running the jar file the program assumes that it is in same f
 
 ## Using the program
 
+Before anything, see that the program assumes that there is spaces between words and the words in the cipher are correct English words (no misspellings etc.)
+
 When the program is running there is options __exit__ (that just stops the program) and __crack__ that is the command that leads you to the action.
 
 After feeding __crack__ there is a decision to be made. If you have a cipher ready (English text transformed as a cipher) then press anything. If you want to feed the text as a real English text, then feed command __g__ that leads you to generating the cipher. It will produce two additional steps. First, provide alphabets as a string that includes 26 chars. Like, the normal alphabets are _abcdefghijklmnopqrstuvwxyz_ so give those reordered by your preferences. Second step is to give the text. The program knows to drop letters that are not wanted, so just be careful providing correct English no misspellings etc.
