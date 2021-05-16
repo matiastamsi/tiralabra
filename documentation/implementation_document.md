@@ -38,3 +38,15 @@ There is three different main areas:
 - Recursion to try out different permutations.
 
     - The recursion works as follows. First there is just one permutation (the cipher) and array of Letter objects. This permutation is manipulated so that this permutation creates so many new permutations that there is different letters in the cipher. This is implemented by going through the Letter objects of the cipher and increasing the pointer of the Letter object that points to the next char in Letter's queue. This new permutation is first checked whether it is correct solution and if not, then added to an array for the next round if the permutation is not already added. The pointer is decreased to next iteration where next Letter is been manipulated and so on. When all permutations have been checked, then the recursive crack method is again called but this time with all permuations that were added to array. This continues so long that solution will found. At some point the pointer of a letter is gone through all chars in the queue so then that permutation can be leaved out. Here is an example of the recursion: ![Picture of example of recursion](https://github.com/matiastamsi/tiralabra/blob/main/documentation/example_recursion.png)
+
+## Time complexities
+
+### Trie
+
+### Recursion
+
+## Space complexities
+
+### Trie
+
+### Recursion
