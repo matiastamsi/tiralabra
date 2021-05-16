@@ -48,6 +48,10 @@ public class ConsoleIO implements IO {
         return this.scanner.hasNextLine();
     }
     
+    /**
+     * Getter method for outputs.
+     * @return 
+     */
     @Override
     public String[] getOutputs() {
         return null;

@@ -35,13 +35,4 @@ public class LettersArrayTest {
         lA.compress();
         assertEquals(1, lA.getLettersAsArray().length);
     }
-
-    @Test
-    public void checkingIfPermutationExistsWorks() {
-        lA = new LettersArray(5);
-        lA.addLetters(new Letters(new Letter[1], "exists"));
-        assertTrue(lA.permutationExists("exists"));
-        assertFalse(lA.permutationExists("no"));
-    }
-
 }

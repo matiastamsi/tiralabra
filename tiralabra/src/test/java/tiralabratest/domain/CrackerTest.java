@@ -3,6 +3,7 @@ package tiralabratest.domain;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tiralabra.domain.Cracker;
+import tiralabra.domain.Letter;
 import tiralabra.domain.Trie;
 
 /**
@@ -94,4 +95,11 @@ public class CrackerTest {
                 + "", c.listData());
     }
 
+    @Test
+    public void creatingCopyOfLetterArrayWorks() {
+        Letter[] letterArray = new Letter[1];
+        letterArray[0] = new Letter((char) 97, (float) 1.0, 0);
+        Letter[] copy = c.createCopy(letterArray);
+        assertEquals(97, copy[0].getChar());
+    }
 }

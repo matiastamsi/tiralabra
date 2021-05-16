@@ -52,23 +52,4 @@ public class LettersArray {
         }
         this.array = smaller;
     }
-
-    /**
-     * The method that goes through the array to seek if there is already a
-     * Letters object that forms same permutation. This is how to terminate all
-     * the same branches.
-     *
-     * @param p permutation
-     * @return Boolean value
-     */
-    public boolean permutationExists(String p) {
-        for (Letters letters : this.array) {
-            if (letters != null) {
-                if (letters.getPermutation().equals(p)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

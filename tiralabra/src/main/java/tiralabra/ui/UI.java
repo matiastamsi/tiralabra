@@ -67,7 +67,7 @@ public class UI {
                     manipulatedAlphabets, normalLC);
             io.print("The cipher is:\n" + cipher + "\n");
         } else {
-            io.print("Give a cipher:\n");
+            io.print("\nGive a cipher:\n");
             String given = io.nextLine();
             cipher = given.toLowerCase();
         }
@@ -111,7 +111,7 @@ public class UI {
      * alphabets a-z and spaces.
      * 
      * @param cipher
-     * @return 
+     * @return parsed string
      */
     public String dropEverythingElseThanAlphabetsAndSpaces(String cipher) {
         String s = "";

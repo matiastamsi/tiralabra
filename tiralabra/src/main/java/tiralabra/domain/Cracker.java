@@ -11,10 +11,11 @@ import java.util.Scanner;
 public final class Cracker {
 
     private final Trie trie;
+    private final Trie trieForPermutations;
     private final char[] alphabets;
-    private String cipher;
     private final float[] frequenciesInEnglish;
     private final float[] frequenciesInCipher;
+    private String cipher;
     private int countOfLetters;
     private int countOfDifferentLettersInCipher;
     private String pileC;
@@ -22,24 +23,25 @@ public final class Cracker {
     private Letter[] differentLettersInCipher;
     private Letter[] cipherAsLetterArray;
     private Letter[] letterArray;
-    private final Trie trieForPermutations;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
      * is given but other things cracker finds out later when methods are called
      * for.
      *
-     * @param trie using the trie that is already been made.
+     * @param trie using the Trie that is already been made.
      */
     public Cracker(Trie trie) {
         this.trie = trie;
+        this.trieForPermutations = new Trie();
         this.alphabets = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         // Source is https://en.wikipedia.org/wiki/Letter_frequency
         this.frequenciesInEnglish = loadFrequenciesInEnglish("frequencies.txt");
         this.frequenciesInCipher = new float[26];
         this.countOfLetters = 0;
         this.countOfDifferentLettersInCipher = 0;
-        this.trieForPermutations = new Trie();
+        this.pileC = "";
+        this.pileE = "";
     }
 
     /**
@@ -86,12 +88,10 @@ public final class Cracker {
     }
 
     /**
-     * A helper method that calls 26 times to find the letters with closest
-     * frequencies and add those to the piles.
+     * A method that calls 26 times to find the letters with closest frequencies
+     * and add those to the piles.
      */
     public void order() {
-        this.pileC = "";
-        this.pileE = "";
         int countOfHandledOnes = 0;
         while (countOfHandledOnes < 26) {
             this.pileE += next(this.frequenciesInEnglish, pileE);
@@ -248,9 +248,8 @@ public final class Cracker {
      * permutations. Then it creates new permutations based on previous ones. If
      * a permutation produces a correct English sentence (all the strings are
      * found from the trie) then it returns it as a solution. All different
-     * permutations are added for next round. So, same permutations are rejected
-     * and also those that has a letter that has gone out of new options to
-     * replace.
+     * permutations are added for next round. Same permutations are rejected and
+     * also those that has a letter that has gone out of new options to replace.
      *
      * @param lettersArray array of Letters objects
      * @return solved cipher as a string
@@ -261,29 +260,23 @@ public final class Cracker {
         if (newLength == 1) { // The case in the beginning.
             newLength = this.countOfDifferentLettersInCipher;
         }
-        LettersArray largerLettersArray;
-        try {
-            largerLettersArray = new LettersArray(newLength);
-        } catch (Exception e) {
-            return "pöö";
-
-        }
+        LettersArray largerLettersArray = new LettersArray(newLength);
         // Go through the array of Letters that represents permutations.
         for (Letters letters : lettersArray.getLettersAsArray()) {
-            Letter[] letterArray = letters.getLetters();
+            Letter[] lA = letters.getLetters();
             // Go through the array of Letter objects and do a new permutation.
             for (int i = 0; i < this.countOfDifferentLettersInCipher; i++) {
                 Letter letterAtIndex = this.differentLettersInCipher[i];
                 int indexInLetters = letterAtIndex.getIndexInAlphabets();
-                Letter l = letterArray[indexInLetters];
+                Letter l = lA[indexInLetters];
                 l.increasePointer(); // Pop the first from the queue.
-                String replaced = replaceLettersInCipher(letterArray);
+                String replaced = replaceLettersInCipher(lA);
                 if (allCorrect(replaced)) {
                     return replaced;
                 }
                 if (l.getPointer() < 26) {
                     if (!trieForPermutations.findWord(replaced)) {
-                        Letter[] c = createCopy(letterArray);
+                        Letter[] c = createCopy(lA);
                         largerLettersArray.addLetters(new Letters(c, replaced));
                         this.trieForPermutations.addWord(replaced);
                     }
@@ -301,7 +294,7 @@ public final class Cracker {
      * changes done to letterArray would affect to new array.
      *
      * @param letterArray
-     * @return
+     * @return array of Letter objects
      */
     public Letter[] createCopy(Letter[] letterArray) {
         Letter[] copy = new Letter[letterArray.length];
@@ -324,7 +317,6 @@ public final class Cracker {
      * @return Boolean value
      */
     private boolean allCorrect(String pieces) {
-
         for (String p : pieces.split(" ")) {
             if (!trie.findWord(p)) {
                 return false;
