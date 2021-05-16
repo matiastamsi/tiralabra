@@ -43,10 +43,59 @@ There is three different main areas:
 
 ### Trie
 
+It takes O(n*k) to __create__ a trie. The 'n' is number of the words (strings) and 'k' is the average length of the words (strings).
+
+    while word in file
+        addWord(word)
+        
+    addWord(word)
+        node = findFirstNode(word.charAt(0))
+        while i = 0 in word.length
+            for child in node.getChildren
+                if (word.charAt(i) == child.getNode)
+                    goToNext = true
+            if !goToNext
+                // Create new node
+            if i == word.length - 1
+                // Mark as a end of the word
+                  
+     findFirstNode(c)
+         for node in roots // 26 chars in roots
+             if node.getNode == c
+                 return node
+
+Checking whether a string is a word - __finding__ - takes O(26 + l) ~ O(l) where 'l' is the length of the word. See that first the first letter is searched from the array with length of 26.
+
+    findWord(word)
+        node = findFirstNode(word.charAt(0))
+        if node == null
+            return false
+        while i = 0 in word.length
+            for child in node.getChildren
+                if child.getNode == word.charAt(i)
+                    node = child
+                    found = true
+            if !found or (i == word.length - 1 and !node.isEndOfWord)
+                return false
+        return true
+
 ### Recursion
+
+The recursion takes O(26*n*m) 
+
+    for letters in lettersArray
+        for i = 0 in 25
+            
 
 ## Space complexities
 
 ### Trie
 
+It takes O(n*k) where 'n' is number of the words in a file and 'k' is the average length of the words.
+
+    while word in file
+        addWord(word)
+
 ### Recursion
+
+The recursion creates on each call as many new permutations as there is different letters in the cipher and this continues as long as all letters in alphabets are gone through. So, O(26*n*m)
