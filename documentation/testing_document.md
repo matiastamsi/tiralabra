@@ -18,7 +18,7 @@ The Jacoco test report can be generated after that by givin command:
 
 Unfortunately, I didn't have time to do automated performance testing and draw a graph out of it.
 
-I did however add time recording to see how much time is spent for creating the trie and how much it takes to do cracking in total and just the recursion.
+I did however add time recording to see how much time is been spent for creating the trie and how much it takes to do cracking in total and just the recursion.
 
 Here is an example story that has two frequencies not matching frequencies in English but the correct letters comes right after those false ones. I did not have time to make a story with no difference in frequencies (I think there could be a potential new project to make such a generator). And as can be spotted, the language in the story is poor in every way but it is due to trying to get frequencies to match. Here it comes and I suggest to try it and do changes to it to see how long the cracking works!
 
