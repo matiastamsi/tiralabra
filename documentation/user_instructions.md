@@ -34,6 +34,6 @@ When the program is running there is options __exit__ (that just stops the progr
 
 After feeding __crack__ there is a decision to be made. If you have a cipher ready (English text transformed as a cipher) then press anything. If you want to feed the text as a real English text, then feed command __g__ that leads you to generating the cipher. It will produce two additional steps. First, provide alphabets as a string that includes 26 chars. Like, the normal alphabets are _abcdefghijklmnopqrstuvwxyz_ so give those reordered by your preferences. Second step is to give the text. The program knows to drop letters that are not wanted, so just be careful providing correct English no misspellings etc.
 
-Now that the program has your cipher, it lists frequencies and letters' queues of order of replacing letters by another.
+Now that the program has your cipher, it lists frequencies and letters' queues (queue saves the order of replacing letters by another).
 
 Then just wait if the cracker can crack the cipher. Remember that if you get OutOfMemoryError increase the heap space (see Running jar).
