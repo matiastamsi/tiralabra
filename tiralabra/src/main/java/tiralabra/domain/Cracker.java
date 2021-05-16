@@ -22,6 +22,7 @@ public final class Cracker {
     private Letter[] differentLettersInCipher;
     private Letter[] cipherAsLetterArray;
     private Letter[] letterArray;
+    private final Trie trieForPermutations;
 
     /**
      * Cracker has knowledge of the letters in English and in a cipher. A trie
@@ -38,8 +39,7 @@ public final class Cracker {
         this.frequenciesInCipher = new float[26];
         this.countOfLetters = 0;
         this.countOfDifferentLettersInCipher = 0;
-        this.pileC = "";
-        this.pileE = "";
+        this.trieForPermutations = new Trie();
     }
 
     /**
@@ -90,6 +90,8 @@ public final class Cracker {
      * frequencies and add those to the piles.
      */
     public void order() {
+        this.pileC = "";
+        this.pileE = "";
         int countOfHandledOnes = 0;
         while (countOfHandledOnes < 26) {
             this.pileE += next(this.frequenciesInEnglish, pileE);
@@ -237,6 +239,7 @@ public final class Cracker {
         Letters letters = new Letters(this.letterArray, replaced);
         LettersArray lettersArray = new LettersArray(1);
         lettersArray.addLetters(letters);
+        this.trieForPermutations.addWord(letters.getPermutation());
         return crack(lettersArray);
     }
 
@@ -258,7 +261,13 @@ public final class Cracker {
         if (newLength == 1) { // The case in the beginning.
             newLength = this.countOfDifferentLettersInCipher;
         }
-        LettersArray largerLettersArray = new LettersArray(newLength);
+        LettersArray largerLettersArray;
+        try {
+            largerLettersArray = new LettersArray(newLength);
+        } catch (Exception e) {
+            return "pöö";
+
+        }
         // Go through the array of Letters that represents permutations.
         for (Letters letters : lettersArray.getLettersAsArray()) {
             Letter[] letterArray = letters.getLetters();
@@ -273,9 +282,10 @@ public final class Cracker {
                     return replaced;
                 }
                 if (l.getPointer() < 26) {
-                    if (!largerLettersArray.permutationExists(replaced)) {
+                    if (!trieForPermutations.findWord(replaced)) {
                         Letter[] c = createCopy(letterArray);
                         largerLettersArray.addLetters(new Letters(c, replaced));
+                        this.trieForPermutations.addWord(replaced);
                     }
                 }
                 l.decreasePointer(); // Put back for the next iteration.

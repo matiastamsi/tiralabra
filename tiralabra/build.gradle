@@ -24,6 +24,12 @@ jacocoTestReport {
     }
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'tiralabra.Main'
+    }
+}
+
 run {
     standardInput = System.in
 }

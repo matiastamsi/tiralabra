@@ -57,7 +57,7 @@ public class Trie {
      *
      * @param word is a string from the file.
      */
-    private void addWord(String word) {
+    public void addWord(String word) {
         TrieNode node = findFirstNode(word.charAt(0));
         int i = 1;
         while (i < word.length()) {
