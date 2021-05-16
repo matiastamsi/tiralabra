@@ -1,5 +1,7 @@
 # Design document
 
+__Disclaimer:__ This document is written before an actual implementation. To see updated information and correct analyzing, see the [Implementation document](https://github.com/matiastamsi/tiralabra/blob/main/documentation/implementation_document.md)
+
 I'm implementing a substitution cipher solver that tries to solve a cipher by backtracking while using the frequencies of each letter in English and comparing possible combinations to a trie that is formed based on a dictionary.
 
 The program needs a wide English dictionary that it uses while running. It takes a cipher as an input.
