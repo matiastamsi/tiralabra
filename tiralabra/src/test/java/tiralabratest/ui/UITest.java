@@ -25,7 +25,7 @@ public class UITest {
     public void settingUpUIWorks() {
         boolean b = true;
         try {
-            ui = new UI(new StubIO(new String[1]), new Cracker(new Trie()));
+            ui = new UI(new StubIO(new String[1]), new Cracker(new Trie()), 1);
         } catch (Exception e) {
             b = false;
         }
@@ -34,7 +34,7 @@ public class UITest {
 
     @Test
     public void generatingCipherWorks() {
-        ui = new UI(new StubIO(new String[1]), new Cracker(new Trie()));
+        ui = new UI(new StubIO(new String[1]), new Cracker(new Trie()), 1);
         String s = ui.generate("abcdefghijklmnopqrstuvwxyz",
                 "bcdefghijklmnopqrstuvwxyza", "this is an example");
         assertEquals("uijt jt bo fybnqmf", s);
@@ -42,7 +42,7 @@ public class UITest {
 
     @Test
     public void droppingUnwantedCharsWorks() {
-        ui = new UI(new StubIO(new String[1]), new Cracker(new Trie()));
+        ui = new UI(new StubIO(new String[1]), new Cracker(new Trie()), 1);
         String s = ui.dropEverythingElseThanAlphabetsAndSpaces(""
                 + "This sentence includes elements that we do not want!!!");
         assertEquals("this sentence includes elements that we do not want", s);
@@ -54,15 +54,15 @@ public class UITest {
         inputs[0] = "incorrect";
         inputs[1] = "exit";
         StubIO io = new StubIO(inputs);
-        ui = new UI(io, new Cracker(new Trie()));
+        ui = new UI(io, new Cracker(new Trie()), 1);
         ui.run();
-        assertEquals("Bye!", ui.io.getOutputs()[5]);
+        assertEquals("Bye!", ui.io.getOutputs()[6]);
         assertEquals("Give a command from the following:"
-                + "\nexit\ncrack\n", ui.io.getOutputs()[4]);
+                + "\nexit\ncrack\n", ui.io.getOutputs()[5]);
         assertEquals("The command incorrect not found\n",
-                ui.io.getOutputs()[3]);
+                ui.io.getOutputs()[4]);
         assertEquals("Give a command from the following:"
-                + "\nexit\ncrack\n", ui.io.getOutputs()[2]);
+                + "\nexit\ncrack\n", ui.io.getOutputs()[3]);
     }
 
     @Test
@@ -74,12 +74,12 @@ public class UITest {
         inputs[3] = "a";
         inputs[4] = "exit";
         StubIO io = new StubIO(inputs);
-        ui = new UI(io, new Cracker(new Trie()));
+        ui = new UI(io, new Cracker(new Trie()), 1);
         ui.run();
-        assertEquals("Bye!", ui.io.getOutputs()[13]);
+        assertEquals("Bye!", ui.io.getOutputs()[15]);
         assertEquals("Give a command from the following:"
-                + "\nexit\ncrack\n", ui.io.getOutputs()[12]);
-        assertEquals("e\n", ui.io.getOutputs()[11]);
+                + "\nexit\ncrack\n", ui.io.getOutputs()[14]);
+        assertTrue(ui.io.getOutputs()[13].contains("e"));
         assertEquals("### FREQUENCIES ### \n"
                 + " [letter] / [f. in English] / [f. in the cipher]\n"
                 + "a / 0.08167 / 0.0\n"
@@ -136,18 +136,18 @@ public class UITest {
                 + "w / zqxjkvbpygfwmucldrhsnioate\n"
                 + "x / zqxjkvbpygfwmucldrhsnioate\n"
                 + "y / zqxjkvbpygfwmucldrhsnioate\n"
-                + "z / zqxjkvbpygfwmucldrhsnioate\n", ui.io.getOutputs()[10]);
-        assertEquals("The cipher is:\nb\n", ui.io.getOutputs()[9]);
-        assertEquals("\nGive something to be changed:\n", ui.io.getOutputs()[8]);
+                + "z / zqxjkvbpygfwmucldrhsnioate\n", ui.io.getOutputs()[11]);
+        assertEquals("The cipher is:\nb\n", ui.io.getOutputs()[10]);
+        assertEquals("\nGive something to be changed:\n", ui.io.getOutputs()[9]);
         assertEquals("\nGive alphabets:\n"
-                + "abcdefghijklmnopqrstuvwxyz\n", ui.io.getOutputs()[7]);
+                + "abcdefghijklmnopqrstuvwxyz\n", ui.io.getOutputs()[8]);
         assertEquals("\nLet's do some cracking!\n"
                 + "If you want to generate a cipher by first giving the \n"
                 + "manipulated alphabets, then press 'g'.\n"
                 + "If you want to give the cipher straight,\n"
-                + "then press anything!\n", ui.io.getOutputs()[6]);
+                + "then press anything!\n", ui.io.getOutputs()[7]);
         assertEquals("Give a command from the following:"
-                + "\nexit\ncrack\n", ui.io.getOutputs()[5]);
+                + "\nexit\ncrack\n", ui.io.getOutputs()[6]);
     }
 
     @Test
@@ -158,12 +158,12 @@ public class UITest {
         inputs[2] = "m";
         inputs[3] = "exit";
         StubIO io = new StubIO(inputs);
-        ui = new UI(io, new Cracker(new Trie()));
+        ui = new UI(io, new Cracker(new Trie()), 1);
         ui.run();
-        assertEquals("Bye!", ui.io.getOutputs()[11]);
+        assertEquals("Bye!", ui.io.getOutputs()[13]);
         assertEquals("Give a command from the following:"
-                + "\nexit\ncrack\n", ui.io.getOutputs()[10]);
-        assertEquals("e\n", ui.io.getOutputs()[9]);
+                + "\nexit\ncrack\n", ui.io.getOutputs()[12]);
+        assertTrue(ui.io.getOutputs()[11].contains("e"));
         assertEquals("### FREQUENCIES ### \n"
                 + " [letter] / [f. in English] / [f. in the cipher]\n"
                 + "a / 0.08167 / 0.0\n"
@@ -220,14 +220,14 @@ public class UITest {
                 + "w / zqxjkvbpygfwmucldrhsnioate\n"
                 + "x / zqxjkvbpygfwmucldrhsnioate\n"
                 + "y / zqxjkvbpygfwmucldrhsnioate\n"
-                + "z / zqxjkvbpygfwmucldrhsnioate\n", ui.io.getOutputs()[8]);
-        assertEquals("\nGive a cipher:\n", ui.io.getOutputs()[7]);
+                + "z / zqxjkvbpygfwmucldrhsnioate\n", ui.io.getOutputs()[9]);
+        assertEquals("\nGive a cipher:\n", ui.io.getOutputs()[8]);
         assertEquals("\nLet's do some cracking!\n"
                 + "If you want to generate a cipher by first giving the \n"
                 + "manipulated alphabets, then press 'g'.\n"
                 + "If you want to give the cipher straight,\n"
-                + "then press anything!\n", ui.io.getOutputs()[6]);
+                + "then press anything!\n", ui.io.getOutputs()[7]);
         assertEquals("Give a command from the following:"
-                + "\nexit\ncrack\n", ui.io.getOutputs()[5]);
+                + "\nexit\ncrack\n", ui.io.getOutputs()[6]);
     }
 }

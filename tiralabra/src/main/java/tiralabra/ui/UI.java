@@ -11,6 +11,7 @@ public class UI {
 
     public final IO io;
     private final Cracker cracker;
+    private long timeToCreateTrie;
 
     /**
      * The constructor creates a user interface
@@ -18,9 +19,10 @@ public class UI {
      * @param io Input/Output object
      * @param cracker to crack/break/solve the cipher
      */
-    public UI(final IO io, final Cracker cracker) {
+    public UI(final IO io, final Cracker cracker, long timeToCreateTrie) {
         this.io = io;
         this.cracker = cracker;
+        this.timeToCreateTrie = timeToCreateTrie;
     }
 
     /**
@@ -28,6 +30,8 @@ public class UI {
      */
     public void run() {
         boolean keepGoing = true;
+        io.print("Creating a trie based on 58,112 English words took "
+                + this.timeToCreateTrie + " milliseconds.\n");
         while (keepGoing) {
             io.print("Give a command from the following:"
                     + "\nexit\ncrack\n");
@@ -72,12 +76,19 @@ public class UI {
             cipher = given.toLowerCase();
         }
         cipher = dropEverythingElseThanAlphabetsAndSpaces(cipher);
+        long s1 = System.currentTimeMillis();
         cracker.giveCipher(cipher);
         cracker.order();
         cracker.createLetterArrays();
         cracker.setUpLetters();
         io.print(cracker.listData());
+        long s2 = System.currentTimeMillis();
         io.print(cracker.cracked() + "\n");
+        long end = System.currentTimeMillis();
+        io.print(
+                "Total time spent processing: " + (end - s1) + " ms.\n"
+                + "Time spent cracking: " + (end - s2) + " ms.\n"
+        );
     }
 
     /**
@@ -105,11 +116,11 @@ public class UI {
         }
         return str;
     }
-    
+
     /**
      * Takes user's input cipher and leaves out everything else than just
      * alphabets a-z and spaces.
-     * 
+     *
      * @param cipher
      * @return parsed string
      */
