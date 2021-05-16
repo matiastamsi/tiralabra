@@ -259,6 +259,9 @@ public final class Cracker {
         int newLength = length * length;
         if (newLength == 1) { // The case in the beginning.
             newLength = this.countOfDifferentLettersInCipher;
+        } else if (newLength < 0) {
+            return "Error: Could not solve because the number of permutations "
+                    + "increased to be too large.";
         }
         LettersArray largerLettersArray = new LettersArray(newLength);
         // Go through the array of Letters that represents permutations.
