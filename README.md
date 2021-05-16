@@ -18,6 +18,7 @@ The subject of this project is a cipher cracker that uses frequency analysis. Th
 - The array that saves permutations will eventially become out of memory. When this happens, the program just stops cracking otherwise leading to exception. In the future this being the case, there could be a good time for reducing permutations (leaving those out that have not correct English words at all or just keep those with higher rate of correct words).
 - Performance testing automated and documented with different ciphers to see how many differences there can be in the frequencies and how deep can it go still finding a solution. This could be a whole new functionality and solution presented as a graph.
 - Userinterface could be better to make the program easier to use.
+- And much more!
 
 ## Weekly reports
 [Week 1 report](https://github.com/matiastamsi/tiralabra/blob/main/documentation/week_1_report.md)
