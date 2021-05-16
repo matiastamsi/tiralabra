@@ -81,10 +81,16 @@ Checking whether a string is a word - __finding__ - takes O(26 + l) ~ O(l) where
 
 ### Recursion
 
-The recursion takes O(26*n*m) 
+The recursion takes O(26*n*m)
 
-    for letters in lettersArray
-        for i = 0 in 25
+    crack(lettersArray)
+        newLettersArray = lettersArray.length ^ 2
+        for letters in lettersArray
+            for i = 0 in 25
+                ...
+                replaceLettersInCipher(letters) // O(n)
+                ...
+        crack(newLettersArray)
             
 
 ## Space complexities
@@ -98,4 +104,13 @@ It takes O(n*k) where 'n' is number of the words in a file and 'k' is the averag
 
 ### Recursion
 
-The recursion creates on each call as many new permutations as there is different letters in the cipher and this continues as long as all letters in alphabets are gone through. So, O(26*n*m)
+The recursion creates on each call as many new permutations as there is different letters in the cipher and this continues as long as all letters in alphabets are gone through.
+
+    crack(lettersArray)
+    newLettersArray = lettersArray.length ^ 2
+    for letters in lettersArray
+        for i = 0 in 25
+            ...
+            replaceLettersInCipher(letters) // O(n)
+            ...
+    crack(newLettersArray)
